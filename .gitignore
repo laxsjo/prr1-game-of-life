@@ -1,3 +1,10 @@
+# Compiled files (idk just added some names the binaries might have)
+out
+exe
+game_of_life
+gol
+test
+
 # Prerequisites
 *.d
 
