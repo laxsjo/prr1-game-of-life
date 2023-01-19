@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "*.ini-development": "ini",
+        "rasmus_example.h": "c"
+    }
+}

@@ -14,6 +14,6 @@ else
     exit 1
 fi
 
-gcc -o test $file
-
-echo "created executable 'test'"
+if gcc -o test $file rasmus/*.c melker/*.c; then
+    echo "created executable 'test'"
+fi
