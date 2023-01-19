@@ -1,6 +1,8 @@
 #include <stdio.h>
 
-void main()
+int main()
 {
     printf("Melker testing 123\n");
+
+    return 0;
 }

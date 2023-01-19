@@ -1,6 +1,8 @@
 #include <stdio.h>
 
-void main()
+int main()
 {
     printf("Not implemented\n");
+
+    return 0;
 }
