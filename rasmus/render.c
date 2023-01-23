@@ -47,11 +47,13 @@ void renderBoard(BoardState *state)
 
             if (cell)
             {
-                printf("#");
+                setFormatColor(BG_COLOR_WHITE);
+                printf("  ");
             }
             else
             {
-                printf(" ");
+                setFormatColor(BG_COLOR_DEFAULT);
+                printf("  ");
             }
         }
         printf("\r\n");

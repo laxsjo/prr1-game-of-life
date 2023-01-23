@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 void createDummyState(BoardState *state)
 {
@@ -43,33 +44,38 @@ int main(int argc)
 
     BoardState *other = &state;
 
-    // Vec2 size = {100, 20};
+    Vec2 size = {100, 20};
 
-    // renderBoard(&state);
-    // for (int x = 0; x < size.x; x++)
-    // {
-    //     for (int y = 0; y < size.y; y++)
-    //     {
-    //         state.cells[y][x] = rand() % 2;
-    //     }
-    // }
-    // clearScreen();
-    // renderBoard(&state);
+    renderBoard(&state);
 
-    char test;
+    while (true)
+    {
+        sleep(1);
+
+        for (int x = 0; x < size.x; x++)
+        {
+            for (int y = 0; y < size.y; y++)
+            {
+                state.cells[y][x] = rand() % 2;
+            }
+        }
+        clearScreen();
+        renderBoard(&state);
+    }
+    // char test;
+
+    // // scanf("%c", &test);
+    // // printf("got %c", test);
+
+    // enterNonCanonicalMode();
 
     // scanf("%c", &test);
-    // printf("got %c", test);
+    // printf("got %c\n", test);
 
-    enterNonCanonicalMode();
+    // printf("hi\n");
+    // printf("hello\n");
 
-    scanf("%c", &test);
-    printf("got %c\n", test);
-
-    printf("hi\n");
-    printf("hello\n");
-
-    exitNonCanonicalMode();
+    // exitNonCanonicalMode();
 
     return 0;
 }
