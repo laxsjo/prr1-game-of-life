@@ -1,2 +1,4 @@
 
 void doStuffMelker();
+
+void askConfig();
