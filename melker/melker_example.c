@@ -5,11 +5,6 @@
 #include "../types.h"
 #include <stdbool.h>
 
-void doStuffMelker()
-{
-    printf("I did something for melker!");
-}
-
 //Function for loading presets, saved board configs, and creating new boards
 void askConfig(BoardState *state){
 
@@ -18,8 +13,7 @@ void askConfig(BoardState *state){
     char loadCreate = '*';
 
     while(loadCreate != 'S' && loadCreate != 'P' && loadCreate != 'C'){
-        printf("Would you like to load a previously saved, player-made board configuration, 
-        load a preset, or create a new board? (S/P/C)\n");
+        printf("Would you like to load a previously saved, player-made board configuration, load a preset, or create a new board? (S/P/C)\n");
         scanf(" %c", &loadCreate); //S for Saved player-mades, P for Presets, and C for Creating new boards
 
         if(loadCreate == 'S'){
@@ -28,8 +22,7 @@ void askConfig(BoardState *state){
                 printf("As there are no previously made boards, loading a player-made board will not be possible.\n");
             }else{
                 //Example of save state printed out
-                printf("Current state data:\n\nPlayer position:\n%d, %d\nScreen size:\n%d, %d\n", 
-                stateExample.playerPos.x, stateExample.playerPos.y, stateExample.screenSize.x, stateExample.screenSize.y);
+                printf("Current state data:\n\nPlayer position:\n%d, %d\nScreen size:\n%d, %d\n", stateExample.playerPos.x, stateExample.playerPos.y, stateExample.screenSize.x, stateExample.screenSize.y);
             }
 
             printf("-Load player-made board function here-\n");

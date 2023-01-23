@@ -10,6 +10,7 @@ int main()
 {
     BoardState stateInput;
     
+    //Placeholder values for placeholder state
     stateInput.cells[10][10];
     stateInput.playerPos.x = 7;
     stateInput.playerPos.y = 3;
@@ -17,8 +18,6 @@ int main()
     stateInput.screenSize.y = 150;
     
     askConfig(&stateInput);
-
-    //doStuffMelker();
 
     return 0;
 }
