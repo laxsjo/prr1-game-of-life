@@ -3,7 +3,7 @@
 
 int main()
 {
-    printf("Melker testing git 123\n");
+    printf("Abab ababba baaaaba abababa MEEEMOO!\n");
 
     doStuffMelker();
 
