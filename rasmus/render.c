@@ -2,6 +2,9 @@
 #include "stdio.h"
 #include "ansi_term.h"
 
+const Rgb PLAYER_COLOR = {65, 216, 226};
+const Rgb PLAYER_OVERLAY_COLOR = {114, 255, 224};
+
 // Dummy function, while melkers creates the actual function.
 Vec2 getScreenSize()
 {
@@ -45,16 +48,29 @@ void renderBoard(BoardState *state)
             }
             bool cell = (state->cells)[y][x];
 
+            int color;
+            Rgb playerColor;
+
             if (cell)
             {
-                setFormatColor(BG_COLOR_WHITE);
-                printf("  ");
+                color = BG_COLOR_WHITE;
+                playerColor = PLAYER_OVERLAY_COLOR;
             }
             else
             {
-                setFormatColor(BG_COLOR_DEFAULT);
-                printf("  ");
+                color = BG_COLOR_DEFAULT;
+                playerColor = PLAYER_COLOR;
             }
+
+            if (state->playerPos.x == x && state->playerPos.y == y)
+            {
+                setFormatBgRgb(playerColor);
+            }
+            else
+            {
+                setFormatColor(color);
+            }
+            printf("  ");
         }
         printf("\r\n");
     }
