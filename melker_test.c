@@ -3,7 +3,7 @@
 
 int main()
 {
-    printf("Abab ababba baaaaba abababa MEEEMOO!\n");
+    printf("Abab ababba baaaaba abababa MEEEMOO!!\n");
 
     doStuffMelker();
 
