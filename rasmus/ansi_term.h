@@ -29,6 +29,11 @@ void disableAlternativeBuffer();
 void showCursor();
 void hideCursor();
 
+void resetFormat();
+void setFormatColor(u_int8_t color);
+void setFormatFgRgb(Rgb color);
+void setFormatBgRgb(Rgb color);
+
 void flushCommands();
 
 void enterNonCanonicalMode();
