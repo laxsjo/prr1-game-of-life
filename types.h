@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 
 // To avoid problems when the header is included in multiple files.
 // Source: https://stackoverflow.com/a/228757/15507414
@@ -21,9 +22,9 @@ typedef struct
 
 typedef struct
 {
-    char r;
-    char g;
-    char b;
+    u_int8_t r;
+    u_int8_t g;
+    u_int8_t b;
 } Rgb;
 
 #endif

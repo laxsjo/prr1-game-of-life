@@ -1,6 +1,10 @@
 #include <stdio.h>
 #include <termios.h>
 #include <unistd.h>
+#include <stdlib.h>
+
+#include "../types.h"
+#include "ansi_term.h"
 
 void moveCursorHome()
 {
@@ -29,6 +33,26 @@ void hideCursor()
 void flushCommands()
 {
     fflush(stdout);
+}
+
+void resetFormat()
+{
+    printf("\x1b[0m");
+}
+
+void setFormatColor(u_int8_t color)
+{
+    printf("\x1b[%um", color);
+}
+
+void setFormatFgRgb(Rgb color)
+{
+    printf("\x1b[38;2;%u;%u;%um", color.r, color.g, color.b);
+}
+
+void setFormatBgRgb(Rgb color)
+{
+    printf("\x1b[48;2;%u;%u;%um", color.r, color.g, color.b);
 }
 
 int getTerminalFd()
