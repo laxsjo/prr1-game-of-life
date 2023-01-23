@@ -1,3 +1,4 @@
+#!/bin/bash
 
 if [ "$1" = "-r" ]; then
     file="rasmus_test.c"
