@@ -19,4 +19,11 @@ typedef struct
     Vec2 playerPos;
 } BoardState;
 
+typedef struct
+{
+    char r;
+    char g;
+    char b;
+} Rgb;
+
 #endif
