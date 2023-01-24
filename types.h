@@ -27,4 +27,10 @@ typedef struct
     u_int8_t b;
 } Rgb;
 
+typedef struct
+{
+    char *str;
+    size_t len;
+} StrSlice;
+
 #endif
