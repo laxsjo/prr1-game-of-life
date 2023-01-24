@@ -4,6 +4,7 @@
         "rasmus_example.h": "c",
         "termios.h": "c",
         "ttydefaults.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "string.h": "c"
     }
 }

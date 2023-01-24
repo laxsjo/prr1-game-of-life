@@ -1,11 +1,11 @@
-#include "types.h"
-#include "rasmus/rasmus_example.h"
-#include "rasmus/render.h"
-#include "rasmus/ansi_term.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "types.h"
+#include "rasmus/render.h"
+#include "rasmus/ansi_term.h"
+#include "rasmus/files.h"
 
 void createDummyState(BoardState *state)
 {
@@ -40,28 +40,26 @@ void createDummyState(BoardState *state)
 int main(int argc)
 {
     BoardState state;
-    createDummyState(&state);
-
-    BoardState *other = &state;
-
+    loadBoard(&state, "board1");
+    // createDummyState(&state);
     Vec2 size = {100, 20};
 
     renderBoard(&state);
 
-    while (true)
-    {
-        sleep(1);
+    // while (true)
+    // {
+    //     sleep(1);
 
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
-            {
-                state.cells[y][x] = rand() % 2;
-            }
-        }
-        clearScreen();
-        renderBoard(&state);
-    }
+    //     for (int x = 0; x < size.x; x++)
+    //     {
+    //         for (int y = 0; y < size.y; y++)
+    //         {
+    //             state.cells[y][x] = rand() % 2;
+    //         }
+    //     }
+    //     clearScreen();
+    //     renderBoard(&state);
+    // }
     // char test;
 
     // // scanf("%c", &test);
