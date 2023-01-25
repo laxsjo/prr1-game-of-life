@@ -4,6 +4,7 @@
 #include "../types.h"
 #include "files.h"
 #include "str_utils.h"
+#include "general.h"
 
 typedef struct
 {
@@ -11,10 +12,70 @@ typedef struct
     char *content;
 } BoardSave;
 
+typedef struct
+{
+    size_t nameStart;
+    size_t nameLen;
+    size_t contentStart;
+    size_t contentLen;
+} BoardLocation;
+
 void freeBoardSave(BoardSave save)
 {
     free(save.name);
     free(save.content);
+}
+
+int readSaveFile(char **fileContent)
+{
+    FILE *fd = fopen(".gol.saves.txt", "r");
+    if (fd == NULL)
+    {
+        return LOAD_RESULT_FILE_MISSING;
+    }
+
+    // get file size: https://stackoverflow.com/a/238609/15507414
+    // this should probably have error cheking ;)
+    fseek(fd, 0, SEEK_END);
+    size_t len = ftell(fd);
+    fseek(fd, 0, SEEK_SET);
+
+    // source: https://stackoverflow.com/a/174552/15507414
+    char *content = 0;
+
+    content = malloc(len);
+    if (!content)
+    {
+        panic("oh nose, malloc failed!");
+    }
+
+    size_t read_items = fread(content, sizeof(char), len, fd);
+
+    if (fclose(fd) != 0)
+    {
+        panic("failed to close file '.gol.saves.txt'");
+    }
+
+    *fileContent = content;
+    return LOAD_RESULT_SUCCESS;
+}
+
+void writeSaveFile(const char *content)
+{
+    FILE *fd = fopen(".gol.saves.txt", "w");
+    if (fd == NULL)
+    {
+        panic("opening file '.gol.saves.txt' failed");
+    }
+
+    size_t len = strlen(content);
+
+    fwrite(content, 1, len, fd);
+
+    if (fclose(fd) != 0)
+    {
+        panic("failed to close file '.gol.saves.txt'");
+    }
 }
 
 int separateBoards(const char *fileContent, BoardSave **boardList)
@@ -118,7 +179,7 @@ int separateBoards(const char *fileContent, BoardSave **boardList)
     return nameCount;
 }
 
-BoardState parseBoardContent(char *boardContent)
+BoardState parseBoardContent(const char *boardContent)
 {
     size_t len = strlen(boardContent);
     // count lines
@@ -140,7 +201,7 @@ BoardState parseBoardContent(char *boardContent)
     {
         if (boardContent[i] == '\n' || i == len - 1)
         {
-            if (i == len - 1)
+            if (i == len - 1 && boardContent[i] != '\n')
             {
                 i++;
             }
@@ -148,16 +209,16 @@ BoardState parseBoardContent(char *boardContent)
             StrSlice slice = strGetSlice(boardContent, currentLineStartIndex, lineLen);
             size_t filteredLen = strSliceCountCharOccurrences(&slice, "01");
 
+            char *line = lines[lineIndex];
             lines[lineIndex] = malloc(filteredLen + 1);
             if (lines[lineIndex] == NULL)
             {
-                perror("oh nose, malloc failed!\n");
-                exit(1);
+                panic("oh nose, malloc failed!");
             }
             lines[lineIndex][filteredLen] = '\0';
+            printf("did line %lu: %p, length: %lu\n", lineIndex, lines[lineIndex], lineLen);
 
             // just for convenience
-            char *line = lines[lineIndex];
 
             size_t filteredIndex = 0;
             for (size_t j = 0; j < lineLen; j++)
@@ -165,7 +226,8 @@ BoardState parseBoardContent(char *boardContent)
                 char current = boardContent[currentLineStartIndex + j];
                 if (current == '0' || current == '1')
                 {
-                    line[filteredIndex] = current;
+                    printf("set %lu for line %lu\n", filteredIndex, lineIndex);
+                    lines[lineIndex][filteredIndex] = current;
                     filteredIndex++;
                 }
             }
@@ -229,36 +291,61 @@ BoardState parseBoardContent(char *boardContent)
     return state;
 }
 
+void createFileContentFromBoardList(char **fileContent, const BoardSave *boardList, const size_t listLen)
+{
+    size_t totalLen = 0;
+    for (size_t i = 0; i < listLen; i++)
+    {
+        size_t nameLen = strlen(boardList[i].name);
+        size_t contentLen = strlen(boardList[i].content);
+        contentLen += boardList[i].content[0] != '\n';
+        contentLen += boardList[i].content[contentLen - 1] != '\n';
+
+        totalLen += nameLen + 2 + contentLen; // = ['nameLen']'contentLen'
+    }
+
+    char *content = malloc(totalLen + 1);
+    content[totalLen] = '\0';
+
+    size_t index = 0;
+
+    for (size_t i = 0; i < listLen; i++)
+    {
+        // potential optimization: store these in a list, to avoid duplicate calculation.
+        size_t nameLen = strlen(boardList[i].name);
+        size_t contentLen = strlen(boardList[i].content);
+
+        content[index++] = '[';
+        memcpy(content + index, boardList[i].name, nameLen);
+        index += nameLen;
+        content[index++] = ']';
+
+        if (boardList[i].content[0] != '\n')
+        {
+            content[index++] = '\n';
+        }
+        memcpy(content + index, boardList[i].content, contentLen);
+        index += contentLen;
+        if (boardList[i].content[contentLen - 1] != '\n')
+        {
+            content[index++] = '\n';
+        }
+    }
+
+    *fileContent = content;
+}
+
 /* Load board save of name saveName from the .gol.saves.txt save file.
 Returns LOAD_RESULT_*
 */
 int loadBoard(BoardState *board, const char *saveName)
 {
-    FILE *fd = fopen(".gol.saves.txt", "r");
-    if (fd == NULL)
+    char *content;
+    int result = readSaveFile(&content);
+    if (result == LOAD_RESULT_FILE_MISSING)
     {
         return LOAD_RESULT_FILE_MISSING;
     }
-
-    // get file size: https://stackoverflow.com/a/238609/15507414
-    // this should probably have error cheking ;)
-    fseek(fd, 0, SEEK_END);
-    size_t len = ftell(fd);
-    fseek(fd, 0, SEEK_SET);
-
-    // source: https://stackoverflow.com/a/174552/15507414
-    char *content = 0;
-
-    content = malloc(len);
-    if (!content)
-    {
-        perror("oh nose, malloc failed!\n");
-        exit(1);
-    }
-
-    size_t read_items = fread(content, sizeof(char), len, fd);
-
-    fclose(fd);
 
     BoardSave *boardSaves;
 
@@ -295,4 +382,77 @@ int loadBoard(BoardState *board, const char *saveName)
 
     free(content);
     return LOAD_RESULT_SUCCESS;
+}
+
+void saveBoard(const BoardState *state, char *saveName)
+{
+    char *content = "";
+    readSaveFile(&content);
+
+    BoardSave *boardSaves;
+
+    int boardLen = separateBoards(content, &boardSaves);
+    free(content);
+
+    bool nameFound = false;
+    BoardSave *boardSave;
+    for (int i = 0; i < boardLen; i++)
+    {
+        if (strcmp(boardSaves[i].name, saveName) == 0)
+        {
+            nameFound = true;
+            boardSave = &boardSaves[i];
+        }
+    }
+
+    if (!nameFound)
+    {
+        // resize boardSaves
+        BoardSave *newBoardSaves = malloc(sizeof(newBoardSaves) + 1);
+        for (int i = 0; i < boardLen; i++)
+        {
+            newBoardSaves[i] = boardSaves[i];
+        }
+        boardLen += 1;
+        boardSaves = newBoardSaves;
+
+        boardSaves[boardLen - 1] = (BoardSave){saveName, NULL};
+        boardSave = &boardSaves[boardLen - 1];
+    }
+
+    size_t width = state->screenSize.x;
+    size_t height = state->screenSize.y;
+
+    size_t boardContentLen = width * height + height;
+    char *boardContent = malloc(boardContentLen + 1);
+    boardContent[boardContentLen] = '\0';
+
+    for (size_t y = 0; y < height; y++)
+    {
+
+        for (size_t x = 0; x < width; x++)
+        {
+            char current;
+            if (state->cells[y][x] == true)
+            {
+                current = '1';
+            }
+            else
+            {
+                current = '0';
+            }
+            boardContent[y * width + x] = current;
+        }
+        boardContent[y * width + width] = '\n';
+    }
+
+    boardSave->content = boardContent;
+
+    char *newContent;
+    createFileContentFromBoardList(&newContent, boardSaves, boardLen);
+
+    printf("wrote new content:\n%s", newContent);
+
+    writeSaveFile(newContent);
+    free(newContent);
 }

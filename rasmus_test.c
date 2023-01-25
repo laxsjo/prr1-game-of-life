@@ -6,6 +6,7 @@
 #include "rasmus/render.h"
 #include "rasmus/ansi_term.h"
 #include "rasmus/files.h"
+#include "rasmus/general.h"
 
 void createDummyState(BoardState *state)
 {
@@ -43,14 +44,15 @@ int main(int argc)
     int result = loadBoard(&state, "board1");
     if (result == LOAD_RESULT_FILE_MISSING)
     {
-        printf("file not found!\n");
-        exit(1);
+        panic("file not found!");
     }
     else if (result == LOAD_RESULT_NAME_NOT_FOUND)
     {
-        printf("save does not exist\n");
-        exit(1);
+        panic("save does not exist");
     }
+
+    saveBoard(&state, "board1");
+
     // createDummyState(&state);
     Vec2 size = {100, 20};
     // printf("worked: %i\n", result);
@@ -68,7 +70,7 @@ int main(int argc)
     //     printf("\n");
     // }
 
-    renderBoard(&state);
+    // renderBoard(&state);
 
     char temp;
     scanf("%c", &temp);

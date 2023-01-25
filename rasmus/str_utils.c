@@ -44,3 +44,19 @@ size_t strSliceCountCharOccurrences(const StrSlice *restrict str, const char *ch
 
     return count;
 }
+
+/*
+Copies string slice into string `offset` bytes from the start.
+
+This function does not check the destination length in any way. Make sure it is
+long enough.
+*/
+void copyStrSliceToStr(char *dest, const StrSlice *restrict slice, const size_t offset)
+{
+
+    size_t len = strlen(dest);
+    if (len < offset + slice->len)
+    {
+    }
+    memcpy(dest + offset, slice->str, slice->len);
+}

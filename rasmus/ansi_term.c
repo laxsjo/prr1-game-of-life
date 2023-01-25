@@ -5,6 +5,7 @@
 
 #include "../types.h"
 #include "ansi_term.h"
+#include "general.h"
 
 void moveCursorHome()
 {
@@ -86,15 +87,13 @@ void setTerminalFlags(int flags)
     int fd = getTerminalFd();
     if (fd == -1)
     {
-        perror("terminal file descriptor not found :(\r\n");
-        _exit(1);
+        panic("terminal file descriptor not found :(");
     }
 
     result = tcgetattr(fd, &settings);
     if (result < 0)
     {
-        perror("error in tcgetattr");
-        _exit(1);
+        panic("error in tcgetattr");
     }
 
     printf("%u", settings.c_lflag);
@@ -105,8 +104,7 @@ void setTerminalFlags(int flags)
     result = tcsetattr(fd, TCSANOW, &settings);
     if (result < 0)
     {
-        perror("error in tcgetattr");
-        _exit(1);
+        panic("error in tcgetattr");
     }
 }
 
@@ -119,16 +117,14 @@ void unsetTerminalFlags(int flags)
     int fd = getTerminalFd();
     if (fd == -1)
     {
-        perror("terminal file descriptor not found :(\r\n");
-        _exit(1);
+        panic("terminal file descriptor not found :(\r\n");
     }
     printf("%i\n", fd);
 
     result = tcgetattr(fd, &settings);
     if (result < 0)
     {
-        perror("error in tcgetattr");
-        _exit(1);
+        panic("error in tcgetattr");
     }
 
     // why i choose c_lflag: https://www.gnu.org/software/libc/manual/html_node/Local-Modes.html
@@ -137,8 +133,7 @@ void unsetTerminalFlags(int flags)
     result = tcsetattr(fd, TCSANOW, &settings);
     if (result < 0)
     {
-        perror("error in tcgetattr");
-        _exit(1);
+        panic("error in tcgetattr");
     }
 }
 

@@ -9,4 +9,6 @@
 
 int loadBoard(BoardState *board, const char *saveName);
 
+void saveBoard(const BoardState *state, char *saveName);
+
 #endif
