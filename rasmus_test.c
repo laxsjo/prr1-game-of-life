@@ -40,11 +40,38 @@ void createDummyState(BoardState *state)
 int main(int argc)
 {
     BoardState state;
-    loadBoard(&state, "board1");
+    int result = loadBoard(&state, "board1");
+    if (result == LOAD_RESULT_FILE_MISSING)
+    {
+        printf("file not found!\n");
+        exit(1);
+    }
+    else if (result == LOAD_RESULT_NAME_NOT_FOUND)
+    {
+        printf("save does not exist\n");
+        exit(1);
+    }
     // createDummyState(&state);
     Vec2 size = {100, 20};
+    // printf("worked: %i\n", result);
+    // printf("size: (%i, %i)\n", state.screenSize.x, state.screenSize.y);
+    // printf("%u\n", state.cells[0][0]);
+    // printf("worked2\n");
+
+    // for (size_t y = 0; y < state.screenSize.y; y++)
+    // {
+    //     for (size_t x = 0; x < state.screenSize.x; x++)
+    //     {
+    //         // printf("worked\n");
+    //         printf("%u ", state.cells[y][x]);
+    //     }
+    //     printf("\n");
+    // }
 
     renderBoard(&state);
+
+    char temp;
+    scanf("%c", &temp);
 
     // while (true)
     // {

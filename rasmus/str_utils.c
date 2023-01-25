@@ -21,6 +21,7 @@ char *strSliceToStr(const StrSlice slice)
 {
     char *out = malloc(slice.len + 1);
     memcpy(out, slice.str, slice.len);
+    out[slice.len] = '\0';
 
     return out;
 }

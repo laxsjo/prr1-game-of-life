@@ -140,11 +140,21 @@ BoardState parseBoardContent(char *boardContent)
     {
         if (boardContent[i] == '\n' || i == len - 1)
         {
+            if (i == len - 1)
+            {
+                i++;
+            }
             size_t lineLen = i - currentLineStartIndex;
-            StrSlice slice = strGetSlice(boardContent, i, lineLen);
+            StrSlice slice = strGetSlice(boardContent, currentLineStartIndex, lineLen);
             size_t filteredLen = strSliceCountCharOccurrences(&slice, "01");
 
-            lines[lineIndex] = malloc(filteredLen + 1); // I should check for null here...
+            lines[lineIndex] = malloc(filteredLen + 1);
+            if (lines[lineIndex] == NULL)
+            {
+                perror("oh nose, malloc failed!\n");
+                exit(1);
+            }
+            lines[lineIndex][filteredLen] = '\0';
 
             // just for convenience
             char *line = lines[lineIndex];
@@ -152,14 +162,13 @@ BoardState parseBoardContent(char *boardContent)
             size_t filteredIndex = 0;
             for (size_t j = 0; j < lineLen; j++)
             {
-                char current = line[currentLineStartIndex + j];
+                char current = boardContent[currentLineStartIndex + j];
                 if (current == '0' || current == '1')
                 {
                     line[filteredIndex] = current;
                     filteredIndex++;
                 }
             }
-            line[filteredIndex] = '\0';
 
             lineIndex++;
             currentLineStartIndex = i + 1;
@@ -191,13 +200,20 @@ BoardState parseBoardContent(char *boardContent)
         cells[i] = malloc(sizeof(bool) * width);
     }
 
-    for (int y = 0; y < height; y++)
+    size_t y = 0;
+    for (size_t i = 0; i < lineCount; i++)
     {
-        for (int x = 0; x < width; x++)
+        if (strlen(lines[i]) == 0)
         {
-            cells[y][x] = lines[y][x] == '1';
+            continue;
         }
+        for (size_t x = 0; x < width; x++)
+        {
+            cells[y][x] = lines[i][x] == '1';
+        }
+        y++;
     }
+    // printf("lineCount: %i\nwidth: %lu, height: %lu\n", lineCount, width, height);
 
     BoardState state = {
         cells,
@@ -208,6 +224,9 @@ BoardState parseBoardContent(char *boardContent)
     return state;
 }
 
+/* Load board save of name saveName from the .gol.saves.txt save file.
+Returns LOAD_RESULT_*
+*/
 int loadBoard(BoardState *board, const char *saveName)
 {
     FILE *fd = fopen(".gol.saves.txt", "r");
@@ -215,7 +234,6 @@ int loadBoard(BoardState *board, const char *saveName)
     {
         return LOAD_RESULT_FILE_MISSING;
     }
-    printf("worked 1\n");
 
     // get file size: https://stackoverflow.com/a/238609/15507414
     // this should probably have error cheking ;)
@@ -233,13 +251,9 @@ int loadBoard(BoardState *board, const char *saveName)
         exit(1);
     }
 
-    fread(content, 1, len, fd);
-
-    free(content);
+    size_t read_items = fread(content, sizeof(char), len, fd);
 
     fclose(fd);
-
-    printf("worked 2\n");
 
     BoardSave *boards;
 
@@ -269,5 +283,6 @@ int loadBoard(BoardState *board, const char *saveName)
     // parse content
     *board = parseBoardContent(boardSave.content);
 
+    free(content);
     return LOAD_RESULT_SUCCESS;
 }
