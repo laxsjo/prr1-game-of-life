@@ -214,6 +214,11 @@ BoardState parseBoardContent(char *boardContent)
         y++;
     }
     // printf("lineCount: %i\nwidth: %lu, height: %lu\n", lineCount, width, height);
+    for (size_t i = 0; i < lineCount; i++)
+    {
+        free(lines[i]);
+    }
+    free(lines);
 
     BoardState state = {
         cells,
@@ -255,9 +260,9 @@ int loadBoard(BoardState *board, const char *saveName)
 
     fclose(fd);
 
-    BoardSave *boards;
+    BoardSave *boardSaves;
 
-    int boardLen = separateBoards(content, &boards);
+    int boardLen = separateBoards(content, &boardSaves);
 
     if (boardLen == 0)
     {
@@ -268,10 +273,10 @@ int loadBoard(BoardState *board, const char *saveName)
     BoardSave boardSave;
     for (int i = 0; i < boardLen; i++)
     {
-        if (strcmp(boards[i].name, saveName) == 0)
+        if (strcmp(boardSaves[i].name, saveName) == 0)
         {
             nameFound = true;
-            boardSave = boards[i];
+            boardSave = boardSaves[i];
         }
     }
 
@@ -282,6 +287,11 @@ int loadBoard(BoardState *board, const char *saveName)
 
     // parse content
     *board = parseBoardContent(boardSave.content);
+
+    for (size_t i = 0; i < boardLen; i++)
+    {
+        freeBoardSave(boardSaves[i]);
+    }
 
     free(content);
     return LOAD_RESULT_SUCCESS;
