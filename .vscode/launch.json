@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(gdb) Launch test",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/test",
@@ -15,6 +15,7 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
+            // "avoidWindowsConsoleRedirection": true,
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -25,6 +26,16 @@
                     "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
+                },
+                {
+                    "description": "Catch exit",
+                    "text": "catch syscall 60",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Catch exit_group",
+                    "text": "catch syscall 231",
+                    "ignoreFailures": false
                 }
             ]
         }
