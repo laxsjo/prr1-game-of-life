@@ -6,6 +6,9 @@
         "ttydefaults.h": "c",
         "stdbool.h": "c",
         "string.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "type_traits": "c",
+        "input.h": "c",
+        "types.h": "c"
     }
 }

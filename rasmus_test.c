@@ -8,6 +8,7 @@
 #include "rasmus/files.h"
 #include "rasmus/general.h"
 #include "rasmus/input.h"
+#include "rasmus/game_logic.h"
 
 void createDummyState(BoardState *state)
 {
@@ -39,6 +40,20 @@ void createDummyState(BoardState *state)
     *state = outState;
 }
 
+bool dummyTick(BoardState *state)
+{
+    if (takeInputs(state, true))
+    {
+        return true;
+    }
+
+    clearScreen();
+
+    renderBoard(state);
+
+    return false;
+}
+
 int main(int argc)
 {
     BoardState state;
@@ -52,10 +67,19 @@ int main(int argc)
         panic("save does not exist");
     }
 
+    // list_char_t *list = NULL;
+    // push_back_char(&list, 'A');
+    // push_back_char(&list, 'B');
+    // push_back_char(&list, 'C');
+    // push_back_char(&list, 'D');
+    // push_back_char(&list, '\0');
+
+    // printf("string: %s", list->array);
+
     saveBoard(&state, "board1");
 
     // createDummyState(&state);
-    Vec2 size = {100, 20};
+    // Vec2 size = {100, 20};
     // printf("worked: %i\n", result);
     // printf("size: (%i, %i)\n", state.screenSize.x, state.screenSize.y);
     // printf("%u\n", state.cells[0][0]);
@@ -74,48 +98,12 @@ int main(int argc)
     // renderBoard(&state);
 
     initBoardDisplay();
-    int test = getchar();
+
+    while (!dummyTick(&state))
+    {
+    }
+
     cleanUp();
-    if (test == -1)
-    {
-        printf("\nno input\n");
-    }
-    else
-    {
-        printf("\n%c\n", test);
-    }
-
-    // char temp;
-    // scanf("%c", &temp);
-
-    // while (true)
-    // {
-    //     sleep(1);
-
-    //     for (int x = 0; x < size.x; x++)
-    //     {
-    //         for (int y = 0; y < size.y; y++)
-    //         {
-    //             state.cells[y][x] = rand() % 2;
-    //         }
-    //     }
-    //     clearScreen();
-    //     renderBoard(&state);
-    // }
-    // char test;
-
-    // // scanf("%c", &test);
-    // // printf("got %c", test);
-
-    // enterNonCanonicalMode();
-
-    // scanf("%c", &test);
-    // printf("got %c\n", test);
-
-    // printf("hi\n");
-    // printf("hello\n");
-
-    // exitNonCanonicalMode();
 
     return 0;
 }

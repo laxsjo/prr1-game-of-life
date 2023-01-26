@@ -9,36 +9,43 @@
 
 void moveCursorHome()
 {
-    printf("\x1b[H");
+    // printf("\x1b[H");
+    write(0, "\x1b[H", 3);
 }
 
 void activateAlternativeBuffer()
 {
-    printf("\x1b[?1049h");
+    // printf("\x1b[?1049h");
+    write(0, "\x1b[?1049h", 8);
 }
 
 void disableAlternativeBuffer()
 {
-    printf("\x1b[?1049l");
+    // why I use write: https://stackoverflow.com/a/16891799/15507414
+    // printf("\x1b[?1049l");
+    write(0, "\x1b[?1049l", 8);
 }
 
 void showCursor()
 {
-    printf("\x1b[?25h");
+    // printf("\x1b[?25h");
+    write(0, "\x1b[?25h", 6);
 }
 void hideCursor()
 {
-    printf("\x1b[?25l");
+    // printf("\x1b[?25l");
+    write(0, "\x1b[?25l", 6);
 }
 
 void flushCommands()
 {
-    fflush(stdout);
+    fflush(0);
 }
 
 void resetFormat()
 {
-    printf("\x1b[0m");
+    // printf("\x1b[0m");
+    write(0, "\x1b[0m", 4);
 }
 
 void setFormatColor(u_int8_t color)
@@ -96,7 +103,7 @@ void setTerminalFlags(int flags)
         panic("error in tcgetattr");
     }
 
-    printf("%u", settings.c_lflag);
+    // printf("%u", settings.c_lflag);
 
     // why i choose c_lflag: https://www.gnu.org/software/libc/manual/html_node/Local-Modes.html
     settings.c_lflag |= flags;

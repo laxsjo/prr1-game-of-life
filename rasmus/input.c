@@ -4,6 +4,7 @@
 #include <sys/select.h>
 #include <stdbool.h>
 #include "../types.h"
+#include "input.h"
 
 /* Problem: get non-blocking keyboard input
 potential source?: https://gamedev.stackexchange.com/questions/146256/how-do-i-get-getchar-to-not-block-the-input#comment258193_146256
@@ -15,72 +16,61 @@ source: https://stackoverflow.com/a/30548692/15507414
 getchar() now return -1 if there's no input
 source: https://www.quora.com/What-is-return-type-of-getchar-fgetc-and-getc-in-C
 */
-// Source: https://stackoverflow.com/a/448982/15507414
-int kbhit()
-{
-    struct timeval tv = {0L, 0L};
-    fd_set fds;
-    FD_ZERO(&fds);
-    FD_SET(0, &fds);
-    return select(1, &fds, NULL, NULL, &tv) > 0;
-}
+// // Source: https://stackoverflow.com/a/448982/15507414
 
-int getch()
+bool parseInputBytes(const char *bytes, const size_t bytesLength, InputList *outList)
 {
-    int r;
-    unsigned char c;
-    if ((r = read(0, &c, sizeof(c))) < 0)
-    {
-        return r;
-    }
-    else
-    {
-        return c;
-    }
-}
+    InputList list;
+    /* Potential memory optimization: this potentially overestimates length,
+    if input bytes included multi byte inputs.
+    */
+    list.inputs = malloc(sizeof(Input) * bytesLength);
+    size_t listIndex = 0;
 
-typedef enum
-{
-    InputNormal = 0,
-    InputUp,
-    InputDown,
-    InputRight,
-    InputLeft,
-} InputType;
-
-typedef struct
-{
-    InputType type;
-    char normalKey;
-} Input;
-
-typedef struct
-{
-    Input *inputs;
-    size_t len;
-} InputList;
-
-bool parseInputBytes(const char *bytes, const size_t bytesLength, InputList **outList)
-{
     bool searchingEscape = false;
     bool foundOpenSquareBracket = false;
     for (size_t i = 0; i < bytesLength; i++)
     {
-        if (bytes[i] == '\e')
+        if (bytes[i] == '\e' && i + 3 < bytesLength)
         {
             searchingEscape = true;
+            char second = bytes[i];
+            if (second != '[')
+            {
+                list.inputs[listIndex++] = (Input){InputNormal, '\e'};
+                list.inputs[listIndex++] = (Input){InputNormal, second};
+                continue;
+            }
+            i++;
+
+            char third = bytes[i];
+            switch (third)
+            {
+            case 'A':
+                list.inputs[listIndex++] = (Input){InputUp, 0};
+                break;
+            case 'B':
+                list.inputs[listIndex++] = (Input){InputDown, 0};
+                break;
+            case 'C':
+                list.inputs[listIndex++] = (Input){InputRight, 0};
+                break;
+            case 'D':
+                list.inputs[listIndex++] = (Input){InputLeft, 0};
+                break;
+            default:
+                list.inputs[listIndex++] = (Input){InputNormal, '\e'};
+                list.inputs[listIndex++] = (Input){InputNormal, second};
+                list.inputs[listIndex++] = (Input){InputNormal, third};
+                continue;
+            }
+            i++;
         }
-        if (searchingEscape && bytes[i] == '[')
-        {
-            foundOpenSquareBracket = true;
-        }
+
+        list.inputs[listIndex++] = (Input){InputNormal, bytes[i]};
+
+        list.len = listIndex + 1;
+
+        *outList = list;
     }
-}
-
-bool handleInput(input)
-{
-}
-
-bool takeInputs(BoardState *state, bool allowEdit)
-{
 }

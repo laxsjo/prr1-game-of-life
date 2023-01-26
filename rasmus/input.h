@@ -3,9 +3,27 @@
 #ifndef _INPUT_H
 #define _INPUT_H
 
-int kbhit();
-int getch();
+typedef enum
+{
+    InputNormal = 0,
+    InputUp,
+    InputDown,
+    InputRight,
+    InputLeft,
+} KeyType;
 
-bool takeInputs(BoardState *state, bool allowEdit);
+typedef struct
+{
+    KeyType type;
+    char normalKey;
+} Input;
+
+typedef struct
+{
+    Input *inputs;
+    size_t len;
+} InputList;
+
+bool parseInputBytes(const char *bytes, const size_t bytesLength, InputList *outList);
 
 #endif
