@@ -15,10 +15,10 @@ source: https://stackoverflow.com/a/46351960/15507414
         size_t len;          \
         type array[];        \
     } list_##type##_t;       \
-    int push_back_##type(list_##type##_t **list, int value);
+    int push_back_##type(list_##type##_t **list, type value);
 
 #define defineListFunction(type)                                                             \
-    int push_back_##type(list_##type##_t **list, int value)                                  \
+    int push_back_##type(list_##type##_t **list, type value)                                 \
     {                                                                                        \
         size_t x = *list ? list[0]->len : 0, y = x + 1;                                      \
                                                                                              \
