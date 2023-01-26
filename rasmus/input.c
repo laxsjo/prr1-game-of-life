@@ -39,6 +39,48 @@ int getch()
     }
 }
 
+typedef enum
+{
+    InputNormal = 0,
+    InputUp,
+    InputDown,
+    InputRight,
+    InputLeft,
+} InputType;
+
+typedef struct
+{
+    InputType type;
+    char normalKey;
+} Input;
+
+typedef struct
+{
+    Input *inputs;
+    size_t len;
+} InputList;
+
+bool parseInputBytes(const char *bytes, const size_t bytesLength, InputList **outList)
+{
+    bool searchingEscape = false;
+    bool foundOpenSquareBracket = false;
+    for (size_t i = 0; i < bytesLength; i++)
+    {
+        if (bytes[i] == '\e')
+        {
+            searchingEscape = true;
+        }
+        if (searchingEscape && bytes[i] == '[')
+        {
+            foundOpenSquareBracket = true;
+        }
+    }
+}
+
+bool handleInput(input)
+{
+}
+
 bool takeInputs(BoardState *state, bool allowEdit)
 {
 }
