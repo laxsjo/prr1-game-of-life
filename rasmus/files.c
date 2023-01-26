@@ -191,7 +191,10 @@ BoardState parseBoardContent(const char *boardContent)
             lineCount++;
         }
     }
-    lineCount++; // account for the fact that the last line might not end with a newline
+    if (boardContent[len - 1] != '\n')
+    {
+        lineCount++; // account for the fact that the last line might not end with a newline
+    }
 
     char **lines = malloc(sizeof(char *) * lineCount);
     size_t lineIndex = 0;
@@ -216,7 +219,6 @@ BoardState parseBoardContent(const char *boardContent)
                 panic("oh nose, malloc failed!");
             }
             lines[lineIndex][filteredLen] = '\0';
-            printf("did line %lu: %p, length: %lu\n", lineIndex, lines[lineIndex], lineLen);
 
             // just for convenience
 
@@ -226,7 +228,6 @@ BoardState parseBoardContent(const char *boardContent)
                 char current = boardContent[currentLineStartIndex + j];
                 if (current == '0' || current == '1')
                 {
-                    printf("set %lu for line %lu\n", filteredIndex, lineIndex);
                     lines[lineIndex][filteredIndex] = current;
                     filteredIndex++;
                 }
@@ -423,13 +424,12 @@ void saveBoard(const BoardState *state, char *saveName)
     size_t width = state->screenSize.x;
     size_t height = state->screenSize.y;
 
-    size_t boardContentLen = width * height + height;
+    size_t boardContentLen = width * height + height; // cells + 1 newline per line
     char *boardContent = malloc(boardContentLen + 1);
     boardContent[boardContentLen] = '\0';
 
     for (size_t y = 0; y < height; y++)
     {
-
         for (size_t x = 0; x < width; x++)
         {
             char current;
@@ -441,9 +441,9 @@ void saveBoard(const BoardState *state, char *saveName)
             {
                 current = '0';
             }
-            boardContent[y * width + x] = current;
+            boardContent[y * (width + 1) + x] = current;
         }
-        boardContent[y * width + width] = '\n';
+        boardContent[y * (width + 1) + width] = '\n';
     }
 
     boardSave->content = boardContent;
@@ -451,7 +451,7 @@ void saveBoard(const BoardState *state, char *saveName)
     char *newContent;
     createFileContentFromBoardList(&newContent, boardSaves, boardLen);
 
-    printf("wrote new content:\n%s", newContent);
+    // printf("wrote new content:\n%s", newContent);
 
     writeSaveFile(newContent);
     free(newContent);
