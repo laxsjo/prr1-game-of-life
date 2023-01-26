@@ -7,6 +7,7 @@
 #include "rasmus/ansi_term.h"
 #include "rasmus/files.h"
 #include "rasmus/general.h"
+#include "rasmus/input.h"
 
 void createDummyState(BoardState *state)
 {
@@ -72,8 +73,20 @@ int main(int argc)
 
     // renderBoard(&state);
 
-    char temp;
-    scanf("%c", &temp);
+    initBoardDisplay();
+    int test = getchar();
+    cleanUp();
+    if (test == -1)
+    {
+        printf("\nno input\n");
+    }
+    else
+    {
+        printf("\n%c\n", test);
+    }
+
+    // char temp;
+    // scanf("%c", &temp);
 
     // while (true)
     // {
