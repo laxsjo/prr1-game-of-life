@@ -1,5 +1,5 @@
 #!/bin/bash
 
-if gcc -o gol main.c rasmus/*.c melker/*.c; then
+if gcc -o gol main.c types.c rasmus/*.c melker/*.c; then
     echo "created executable 'gol'"
 fi
