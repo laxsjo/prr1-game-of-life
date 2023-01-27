@@ -18,15 +18,17 @@ void exitSignal(int sig_num)
     // disableAlternativeBuffer();
     // exitNonCanonicalMode();
     cleanUp();
+    // why 128: https://stackoverflow.com/a/57944209/15507414
+    exit(128 + sig_num);
 }
 
 /*
 Problem: I needed signal handlers to clear a bunch of flags and stuff to reset
 the terminal, but there's a bunch of thread funkyness when inside a signal
 handler function.
-I ended up having to convert the ansi_term functions to not use printf, but to
-instead use write, since printf isn't signal safe.
-Also had to change the globals to be atomic types.
+I ended up converting the ansi_term functions to not use printf, but to instead
+use write, since printf isn't signal safe.
+I also changed the globals to be atomic types.
 
 source: https://stackoverflow.com/a/16891799/15507414
 */
@@ -34,12 +36,12 @@ source: https://stackoverflow.com/a/16891799/15507414
 void initBoardDisplay()
 {
     /// source: https://stackoverflow.com/questions/554138/catching-segfaults-in-c
-    // signal(SIGINT, exitSignal);
-    // signal(SIGILL, exitSignal);
-    // signal(SIGABRT, exitSignal);
-    // signal(SIGFPE, exitSignal);
+    signal(SIGINT, exitSignal);
+    signal(SIGILL, exitSignal);
+    signal(SIGABRT, exitSignal);
+    signal(SIGFPE, exitSignal);
     signal(SIGSEGV, exitSignal);
-    // signal(SIGTERM, exitSignal);
+    signal(SIGTERM, exitSignal);
 
     fcntl_default = fcntl(0, F_GETFL);
     // non blocking source: https://gamedev.stackexchange.com/a/146263
