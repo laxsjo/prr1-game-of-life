@@ -7,7 +7,7 @@ const Rgb PLAYER_COLOR = {65, 216, 226};
 const Rgb PLAYER_OVERLAY_COLOR = {114, 255, 224};
 
 // Dummy function, while melkers creates the actual function.
-Vec2 getScreenSize()
+Vec2 getDummySize2()
 {
     // I want to write this on one line... :(
     Vec2 out = {100, 14};
@@ -16,7 +16,7 @@ Vec2 getScreenSize()
 
 void clearScreen()
 {
-    Vec2 size = getScreenSize();
+    Vec2 size = getDummySize2();
     resetFormat();
     moveCursorHome();
 
@@ -34,7 +34,7 @@ void renderBoard(BoardState *state)
 {
     moveCursorHome();
 
-    Vec2 trueSize = getScreenSize();
+    Vec2 trueSize = getDummySize2();
     for (int y = 0; y < state->screenSize.y; y++)
     {
         if (y >= trueSize.y)

@@ -1,17 +1,55 @@
 #include "../types.h"
 #include "input.h"
 
+// Dummy function, while melkers creates the actual function.
+Vec2 getDummySize1()
+{
+    // I want to write this on one line... :(
+    Vec2 out = {100, 14};
+    return out;
+}
+
 bool pointInsideBoard(const BoardState *state, const Vec2 point)
 {
     return point.x >= 0 && point.y >= 0 && point.x < state->screenSize.x && point.y < state->screenSize.y;
 }
 
+void movePlayerIntoBounds(BoardState *state)
+{
+    Vec2 trueSize = getDummySize1();
+
+    if (state->playerPos.x < 0)
+    {
+        state->playerPos.x = 0;
+    }
+    if (state->playerPos.y < 0)
+    {
+        state->playerPos.y = 0;
+    }
+
+    if (state->playerPos.x >= state->screenSize.x)
+    {
+        state->playerPos.x = state->screenSize.x - 1;
+    }
+    if (state->playerPos.y >= state->screenSize.y)
+    {
+        state->playerPos.y = state->screenSize.y - 1;
+    }
+
+    if (state->playerPos.x >= trueSize.x)
+    {
+        state->playerPos.x = trueSize.x - 1;
+    }
+    if (state->playerPos.y >= trueSize.y)
+    {
+        state->playerPos.y = trueSize.y - 1;
+    }
+}
+
 void movePlayerPos(BoardState *state, const Vec2 newPos)
 {
-    if (pointInsideBoard(state, newPos))
-    {
-        state->playerPos = newPos;
-    }
+    state->playerPos = newPos;
+    movePlayerIntoBounds(state);
 }
 
 bool handleInput(const Input input, BoardState *state, const bool allowEdit)
@@ -60,6 +98,9 @@ bool handleInput(const Input input, BoardState *state, const bool allowEdit)
 
 bool takeInputs(BoardState *state, bool allowEdit)
 {
+    // in case terminal window got resized
+    movePlayerIntoBounds(state);
+
     /* Problem: I need a dynamic list, because I don't know how many inputs we
     will receive, and I need to package them up into a single array
 
