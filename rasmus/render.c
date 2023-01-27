@@ -1,6 +1,7 @@
 #include "../types.h"
 #include "stdio.h"
 #include "ansi_term.h"
+#include "../melker/getTerminalSize.h"
 
 const Rgb PLAYER_COLOR = {65, 216, 226};
 const Rgb PLAYER_OVERLAY_COLOR = {114, 255, 224};

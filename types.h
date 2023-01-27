@@ -67,6 +67,8 @@ typedef struct
     Vec2 playerPos;
 } BoardState;
 
+void freeBoardCells(bool **cells, Vec2 size);
+
 typedef struct
 {
     u_int8_t r;

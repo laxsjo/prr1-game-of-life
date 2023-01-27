@@ -1,3 +1,5 @@
+#include "../types.h"
+
 #ifndef _GENERAL_H
 #define _GENERAL_H
 
@@ -15,5 +17,7 @@ void initBoardDisplay();
 void cleanUp();
 
 void _panic(const char *reason, const _LineInfo location);
+
+void resizeBoard(BoardState *state, Vec2 newSize);
 
 #endif

@@ -97,6 +97,8 @@ int main(int argc)
 
     // renderBoard(&state);
 
+    resizeBoard(&state, (Vec2){20, 20});
+
     initBoardDisplay();
 
     // state.playerPos.y = 3;
@@ -110,7 +112,7 @@ int main(int argc)
     while (!dummyTick(&state))
     {
     }
-    saveBoard(&state, "board1");
+    // saveBoard(&state, "board1");
 
     cleanUp();
 
