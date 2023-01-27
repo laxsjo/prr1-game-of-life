@@ -67,7 +67,7 @@ bool takeInputs(BoardState *state, bool allowEdit)
     It had a really nice explanation, and a simple yet extensive implementation.
     */
 
-    list_char_t *bytes = NULL;
+    list_char_t *bytes = new_char_list();
 
     while (true)
     {
@@ -81,9 +81,15 @@ bool takeInputs(BoardState *state, bool allowEdit)
 
     InputList inputs;
     parseInputBytes(bytes->array, bytes->len, &inputs);
+    free(bytes);
 
     for (size_t i = 0; i < inputs.len; i++)
     {
-        handleInput(inputs.inputs[i], state, allowEdit);
+        if (handleInput(inputs.inputs[i], state, allowEdit))
+        {
+            return true;
+        }
     }
+    freeInputList(inputs);
+    return false;
 }

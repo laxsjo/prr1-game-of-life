@@ -49,6 +49,7 @@ void initBoardDisplay()
     fcntl(0, F_SETFL, fcntl_default | O_NONBLOCK);
 
     initCalled = true;
+    hideCursor();
     activateAlternativeBuffer();
     enterNonCanonicalMode();
 }

@@ -4,6 +4,9 @@
         {
             "label": "build_test_debug_rasmus",
             "command": "./build_dbg_test.sh", // Could be any other shell command
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
             "args": [
                 "-r"
             ],

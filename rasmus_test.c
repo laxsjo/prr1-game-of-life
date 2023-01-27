@@ -51,6 +51,8 @@ bool dummyTick(BoardState *state)
 
     renderBoard(state);
 
+    msleep(100);
+
     return false;
 }
 
@@ -76,8 +78,6 @@ int main(int argc)
 
     // printf("string: %s", list->array);
 
-    saveBoard(&state, "board1");
-
     // createDummyState(&state);
     // Vec2 size = {100, 20};
     // printf("worked: %i\n", result);
@@ -99,9 +99,18 @@ int main(int argc)
 
     initBoardDisplay();
 
+    // state.playerPos.y = 3;
+    // renderBoard(&state);
+
+    // while (getchar() == -1)
+    // {
+    //     msleep(10);
+    // }
+
     while (!dummyTick(&state))
     {
     }
+    saveBoard(&state, "board1");
 
     cleanUp();
 

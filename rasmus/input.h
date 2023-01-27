@@ -24,6 +24,8 @@ typedef struct
     size_t len;
 } InputList;
 
+void freeInputList(InputList list);
+
 bool parseInputBytes(const char *bytes, const size_t bytesLength, InputList *outList);
 
 #endif

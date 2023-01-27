@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 /*
 Dynamically growing list
@@ -78,6 +79,8 @@ typedef struct
     char *str;
     size_t len;
 } StrSlice;
+
+int msleep(long msec);
 
 // defineListType(char);
 

@@ -1,3 +1,4 @@
+#include <time.h>
 #include "types.h"
 
 // defineListFunction(char);
@@ -27,4 +28,30 @@ list_char_t *new_char_list()
     list_char_t *list = (list_char_t *)malloc(sizeof(list_char_t) + sizeof(char) * 0); // maybe this 0 should be a 1? https://stackoverflow.com/questions/2022335/whats-the-point-of-malloc0
     list->len = 0;
     return list;
+}
+
+#include <errno.h>
+
+// source: https://stackoverflow.com/a/1157217/15507414
+/* msleep(): Sleep for the requested number of milliseconds. */
+int msleep(long msec)
+{
+    struct timespec ts;
+    int res;
+
+    if (msec < 0)
+    {
+        errno = EINVAL;
+        return -1;
+    }
+
+    ts.tv_sec = msec / 1000;
+    ts.tv_nsec = (msec % 1000) * 1000000;
+
+    do
+    {
+        res = nanosleep(&ts, &ts);
+    } while (res && errno == EINTR);
+
+    return res;
 }
