@@ -7,4 +7,6 @@ bool pointInsideBoard(const BoardState *state, const Vec2 point);
 
 bool takeInputs(BoardState *state, bool allowEdit);
 
+void resizeBoard(BoardState *state, Vec2 newSize);
+
 #endif

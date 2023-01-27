@@ -93,3 +93,32 @@ bool takeInputs(BoardState *state, bool allowEdit)
     freeInputList(inputs);
     return false;
 }
+
+void resizeBoard(BoardState *state, Vec2 newSize)
+{
+    bool **newCells = malloc(sizeof(*newCells) * newSize.y);
+    for (size_t y = 0; y < newSize.y; y++)
+    {
+        newCells[y] = malloc(sizeof(**newCells) * newSize.x);
+    }
+
+    for (size_t y = 0; y < newSize.y; y++)
+    {
+        for (size_t x = 0; x < newSize.x; x++)
+        {
+            if (pointInsideBoard(state, (Vec2){x, y}))
+            {
+                newCells[y][x] = state->cells[y][x];
+            }
+            else
+            {
+                newCells[y][x] = 0;
+            }
+        }
+    }
+
+    freeBoardCells(state->cells, state->screenSize);
+
+    state->cells = newCells;
+    state->screenSize = newSize;
+}

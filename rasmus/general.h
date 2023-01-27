@@ -18,6 +18,4 @@ void cleanUp();
 
 void _panic(const char *reason, const _LineInfo location);
 
-void resizeBoard(BoardState *state, Vec2 newSize);
-
 #endif
