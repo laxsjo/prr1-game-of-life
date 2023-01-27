@@ -45,6 +45,7 @@ typedef struct
     char array[];
 } list_char_t;
 int push_back_char(list_char_t **list, char value);
+list_char_t *new_char_list();
 
 // To avoid problems when the header is included in multiple files.
 // Source: https://stackoverflow.com/a/228757/15507414
