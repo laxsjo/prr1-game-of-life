@@ -17,14 +17,6 @@ void askConfig(BoardState *state){
         scanf(" %c", &loadCreate); //S for Saved player-mades, P for Presets, and C for Creating new boards
 
         if(loadCreate == 'S'){
-            //Possible idea for loading BoardState
-            if(state == NULL){
-                printf("As there are no previously made boards, loading a player-made board will not be possible.\n");
-            }else{
-                //Example of save state printed out
-                printf("Current state data:\n\nPlayer position:\n%d, %d\nScreen size:\n%d, %d\n", stateExample.playerPos.x, stateExample.playerPos.y, stateExample.screenSize.x, stateExample.screenSize.y);
-            }
-
             printf("-Load player-made board function here-\n");
 
         }else if(loadCreate == 'P'){

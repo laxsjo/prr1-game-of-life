@@ -32,7 +32,7 @@ int *makePlaceholderState(BoardState *state, Vec2 *grid){
     };
     *state = outState;
 
-    printf("Your grid state is as follows:\n%d columns & %d rows\n\n", gridSize.y, gridSize.x);
+    printf("Your grid size is as follows:\n%d columns & %d rows\n\n", gridSize.y, gridSize.x);
     
     printf("Coordinate values:\n");
     for(int y = 0; y < gridSize.y; y++){
