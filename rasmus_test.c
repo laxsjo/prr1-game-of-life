@@ -1,11 +1,14 @@
-#include "types.h"
-#include "rasmus/rasmus_example.h"
-#include "rasmus/render.h"
-#include "rasmus/ansi_term.h"
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include "types.h"
+#include "rasmus/render.h"
+#include "rasmus/ansi_term.h"
+#include "rasmus/files.h"
+#include "rasmus/general.h"
+#include "rasmus/input.h"
+#include "rasmus/game_logic.h"
 
 void createDummyState(BoardState *state)
 {
@@ -37,45 +40,79 @@ void createDummyState(BoardState *state)
     *state = outState;
 }
 
+bool dummyTick(BoardState *state)
+{
+    if (takeInputs(state, true))
+    {
+        return true;
+    }
+
+    clearScreen();
+
+    renderBoard(state);
+
+    msleep(100);
+
+    return false;
+}
+
 int main(int argc)
 {
     BoardState state;
-    createDummyState(&state);
-
-    BoardState *other = &state;
-
-    Vec2 size = {100, 20};
-
-    renderBoard(&state);
-
-    while (true)
+    int result = loadBoard(&state, "board1");
+    if (result == LOAD_RESULT_FILE_MISSING)
     {
-        sleep(1);
-
-        for (int x = 0; x < size.x; x++)
-        {
-            for (int y = 0; y < size.y; y++)
-            {
-                state.cells[y][x] = rand() % 2;
-            }
-        }
-        clearScreen();
-        renderBoard(&state);
+        panic("file not found!");
     }
-    // char test;
+    else if (result == LOAD_RESULT_NAME_NOT_FOUND)
+    {
+        panic("save does not exist");
+    }
 
-    // // scanf("%c", &test);
-    // // printf("got %c", test);
+    // list_char_t *list = NULL;
+    // push_back_char(&list, 'A');
+    // push_back_char(&list, 'B');
+    // push_back_char(&list, 'C');
+    // push_back_char(&list, 'D');
+    // push_back_char(&list, '\0');
 
-    // enterNonCanonicalMode();
+    // printf("string: %s", list->array);
 
-    // scanf("%c", &test);
-    // printf("got %c\n", test);
+    // createDummyState(&state);
+    // Vec2 size = {100, 20};
+    // printf("worked: %i\n", result);
+    // printf("size: (%i, %i)\n", state.screenSize.x, state.screenSize.y);
+    // printf("%u\n", state.cells[0][0]);
+    // printf("worked2\n");
 
-    // printf("hi\n");
-    // printf("hello\n");
+    // for (size_t y = 0; y < state.screenSize.y; y++)
+    // {
+    //     for (size_t x = 0; x < state.screenSize.x; x++)
+    //     {
+    //         // printf("worked\n");
+    //         printf("%u ", state.cells[y][x]);
+    //     }
+    //     printf("\n");
+    // }
 
-    // exitNonCanonicalMode();
+    // renderBoard(&state);
+
+    initBoardDisplay();
+
+    // state.playerPos.y = 3;
+    // renderBoard(&state);
+
+    // while (getchar() == -1)
+    // {
+    //     msleep(10);
+    // }
+
+    while (!dummyTick(&state))
+    {
+    }
+    saveBoard(&state, "board1");
+
+    cleanUp();
 
     return 0;
 }

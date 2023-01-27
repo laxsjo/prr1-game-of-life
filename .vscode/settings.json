@@ -4,6 +4,11 @@
         "rasmus_example.h": "c",
         "termios.h": "c",
         "ttydefaults.h": "c",
-        "stdbool.h": "c"
+        "stdbool.h": "c",
+        "string.h": "c",
+        "stdlib.h": "c",
+        "type_traits": "c",
+        "input.h": "c",
+        "types.h": "c"
     }
 }

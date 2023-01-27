@@ -16,6 +16,7 @@ Vec2 getScreenSize()
 void clearScreen()
 {
     Vec2 size = getScreenSize();
+    resetFormat();
     moveCursorHome();
 
     for (int y = 0; y < size.y; y++)
@@ -37,7 +38,8 @@ void renderBoard(BoardState *state)
     {
         if (y >= trueSize.y)
         {
-            continue;
+            // continue;
+            break;
         }
 
         for (int x = 0; x < state->screenSize.x; x++)

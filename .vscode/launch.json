@@ -5,16 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "(gdb) Launch",
+            "name": "(gdb) Launch test Rasmus",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/test",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${fileDirname}",
+            "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
+            "preLaunchTask": "build_test_debug_rasmus",
+            // "avoidWindowsConsoleRedirection": true,
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -25,6 +27,52 @@
                     "description": "Set Disassembly Flavor to Intel",
                     "text": "-gdb-set disassembly-flavor intel",
                     "ignoreFailures": true
+                },
+                {
+                    "description": "Catch exit",
+                    "text": "catch syscall 60",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Catch exit_group",
+                    "text": "catch syscall 231",
+                    "ignoreFailures": false
+                }
+            ]
+        },
+        {
+            "name": "(gdb) Launch test Melker",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/test",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "build_test_debug_melker",
+            // "avoidWindowsConsoleRedirection": true,
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Catch exit",
+                    "text": "catch syscall 60",
+                    "ignoreFailures": false
+                },
+                {
+                    "description": "Catch exit_group",
+                    "text": "catch syscall 231",
+                    "ignoreFailures": false
                 }
             ]
         }

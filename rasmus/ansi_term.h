@@ -1,4 +1,4 @@
-
+#include "../types.h"
 
 #ifndef _ANSI_TERM_H
 #define _ANSI_TERM_H
