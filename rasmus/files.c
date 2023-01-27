@@ -26,6 +26,12 @@ void freeBoardSave(BoardSave save)
     free(save.content);
 }
 
+/*
+Load content of .gol.saves.txt into fileContent.
+
+returns LOAD_RESULT_FILE_MISSING, if the file does not exist,
+or LOAD_RESULT_SUCCESS on success.
+*/
 int readSaveFile(char **fileContent)
 {
     FILE *fd = fopen(".gol.saves.txt", "r");
@@ -338,6 +344,7 @@ void createFileContentFromBoardList(char **fileContent, const BoardSave *boardLi
 
 /* Load board save of name saveName from the .gol.saves.txt save file.
 Returns LOAD_RESULT_*
+Make sure you check for errors!
 */
 int loadBoard(BoardState *board, const char *saveName)
 {
@@ -455,4 +462,40 @@ void saveBoard(const BoardState *state, char *saveName)
 
     writeSaveFile(newContent);
     free(newContent);
+}
+
+size_t getAvailableSaveNames(char ***names)
+{
+    char *content;
+
+    int result = readSaveFile(&content);
+
+    if (result == LOAD_RESULT_FILE_MISSING)
+    {
+        *names = malloc(0);
+        return 0;
+    }
+
+    BoardSave *saves;
+
+    int len = separateBoards(content, &saves);
+    free(content);
+
+    char **out = malloc(sizeof(*names) * len);
+
+    // if (len = 0)
+    // {
+    //     names = malloc(0);
+    //     return 0;
+    // }
+
+    for (size_t i = 0; i < len; i++)
+    {
+        out[i] = saves[i].name;
+        free(saves[i].content);
+    }
+
+    free(saves);
+    *names = out;
+    return len;
 }

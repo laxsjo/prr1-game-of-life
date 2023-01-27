@@ -60,3 +60,12 @@ void copyStrSliceToStr(char *dest, const StrSlice *restrict slice, const size_t 
     }
     memcpy(dest + offset, slice->str, slice->len);
 }
+
+void freeStrList(char **strings, size_t len)
+{
+    for (size_t i = 0; i < len; i++)
+    {
+        free(strings[i]);
+    }
+    free(strings);
+}

@@ -9,6 +9,7 @@
 #include "rasmus/general.h"
 #include "rasmus/input.h"
 #include "rasmus/game_logic.h"
+#include "rasmus/str_utils.h"
 
 void createDummyState(BoardState *state)
 {
@@ -68,6 +69,17 @@ int main(int argc)
     {
         panic("save does not exist");
     }
+
+    // char **names;
+    // size_t len = getAvailableSaveNames(&names);
+    // // do stuff with names...
+    // for (size_t i = 0; i < len; i++)
+    // {
+    //     printf("got name %s\n", names[i]);
+    // }
+
+    // freeStrList(names, len);
+    // return 0;
 
     // list_char_t *list = NULL;
     // push_back_char(&list, 'A');

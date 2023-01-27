@@ -12,4 +12,6 @@ char *strSliceToStr(const StrSlice slice);
 /* Returns the amount of characters in str that are apart of charSet. */
 size_t strSliceCountCharOccurrences(const StrSlice *str, const char *charSet);
 
+void freeStrList(char **strings, size_t len);
+
 #endif
