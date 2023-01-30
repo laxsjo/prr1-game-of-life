@@ -1,11 +1,15 @@
 #include <sys/ioctl.h>
 #include <stdio.h>
+#include "../types.h"
 
-    int getTerminalSize(){
+    Vec2 getTerminalSize(){
         struct winsize termSize;
         ioctl(0, TIOCGWINSZ, &termSize);
 
-        printf("Terminal size:\n");
-        printf ("Columns (Y-axis): %d\n", termSize.ws_row);
-        printf ("Rows (X-axis): %d\n\n", termSize.ws_col);
+        Vec2 size;
+
+        size.y = termSize.ws_row;
+        size.x = termSize.ws_col;
+
+        return (Vec2){size.x, size.y};
     }

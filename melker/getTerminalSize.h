@@ -1,1 +1,3 @@
-int getTerminalSize();
+#include "../types.h"
+
+Vec2 getTerminalSize();

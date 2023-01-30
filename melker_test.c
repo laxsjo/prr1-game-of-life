@@ -23,12 +23,17 @@ int main()
     stateInput.screenSize.x = 100;
     stateInput.screenSize.y = 150;
     */
-
+    /*
     getTerminalSize();
 
     makePlaceholderState(&stateInput, &grid);
     
     askConfig(&stateInput);
+    */
+
+    Vec2 screenSize = getTerminalSize();
+
+    printf("Terminal size: %dx%d\n", screenSize.x, screenSize.y);
 
     return 0;
 }
