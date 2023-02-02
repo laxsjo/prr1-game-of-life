@@ -64,3 +64,8 @@ void freeBoardCells(bool **cells, Vec2 size)
     }
     free(cells);
 }
+
+void freeBoardMessage(BoardState *state)
+{
+    free(state->message);
+}

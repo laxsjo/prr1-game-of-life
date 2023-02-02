@@ -65,6 +65,7 @@ typedef struct
     bool **cells;
     Vec2 screenSize;
     Vec2 playerPos;
+    char *message;
 } BoardState;
 
 void freeBoardCells(bool **cells, Vec2 size);
