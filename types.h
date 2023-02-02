@@ -70,6 +70,8 @@ typedef struct
 
 void freeBoardCells(bool **cells, Vec2 size);
 
+void freeBoardMessage(BoardState *state);
+
 typedef struct
 {
     u_int8_t r;
