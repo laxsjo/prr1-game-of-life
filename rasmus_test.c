@@ -109,9 +109,11 @@ int main(int argc)
 
     // renderBoard(&state);
 
-    resizeBoard(&state, (Vec2){20, 20});
+    // resizeBoard(&state, (Vec2){20, 20});
 
-    initBoardDisplay();
+    startEditor(&state, "hello");
+
+    // initBoardDisplay();
 
     // state.playerPos.y = 3;
     // renderBoard(&state);
@@ -121,12 +123,12 @@ int main(int argc)
     //     msleep(10);
     // }
 
-    while (!dummyTick(&state))
-    {
-    }
+    // while (!dummyTick(&state))
+    // {
+    // }
     // saveBoard(&state, "board1");
 
-    cleanUp();
+    // cleanUp();
 
     return 0;
 }
