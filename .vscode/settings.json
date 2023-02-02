@@ -9,6 +9,7 @@
         "stdlib.h": "c",
         "type_traits": "c",
         "input.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "getterminalsize.h": "c"
     }
 }

@@ -178,6 +178,12 @@ void startEditor(BoardState *state, char *boardName)
 
     initBoardDisplay();
 
+    // clearScreen();
+
+    // renderBoard(state);
+
+    // clearScreen();
+
     while (true)
     {
         if (takeInputs(state, true))
@@ -185,6 +191,7 @@ void startEditor(BoardState *state, char *boardName)
             break;
         }
 
+        // not necessary
         clearScreen();
 
         renderBoard(state);
