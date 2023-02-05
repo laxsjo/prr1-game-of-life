@@ -1,5 +1,6 @@
 # Misc
 .gol.saves.txt
+.VSCodeCounter/**
 
 # Compiled files (idk just added some names the binaries might have)
 out
