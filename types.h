@@ -60,6 +60,8 @@ typedef struct
     int y;
 } Vec2;
 
+bool vec2Eq(Vec2 a, Vec2 b);
+
 typedef struct
 {
     bool **cells;

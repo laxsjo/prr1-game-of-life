@@ -30,6 +30,11 @@ list_char_t *new_char_list()
     return list;
 }
 
+bool vec2Eq(Vec2 a, Vec2 b)
+{
+    return a.x == b.x && a.y == b.y;
+}
+
 #include <errno.h>
 
 // source: https://stackoverflow.com/a/1157217/15507414
