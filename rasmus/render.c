@@ -65,17 +65,39 @@ void clearScreen()
         }
     }
 
-    resetFormat();
-    moveCursorHome();
+    resetFormatPrintf();
+    moveCursorHomePrintf();
 
-    write(0, buffer, len);
+    // write(0, buffer, len);
 
     // printf("%s", buffer);
 }
 
+// void changeFormatColor()
+
+/*
+Problem: The render function was generally very inconsistent, sometimes
+outputing things in the wrong order.
+
+The problem was that `moveCursorHome()` uses the `write()` command, which,
+unlike `printf()`, does not buffer the output. So this might cause
+the contents of `write` to be printed before content from `printf`, even if
+`printf` was run before `write`.
+Ok it seems it's more complicated than that...
+Flush stdout after every printf seems to fix the issue. It's obviously not
+acceptable because of the performance.
+
+Adding a sleep timer of 10ms to each line also seems to fix the issue. But this
+is obviously also too slow.
+
+source: https://stackoverflow.com/a/71933775/15507414
+
+*/
 void renderBoard(BoardState *state)
 {
-    moveCursorHome();
+
+    // printf("\x1b[2J");
+    moveCursorHomePrintf();
 
     if (state->message != NULL)
     {
@@ -84,8 +106,17 @@ void renderBoard(BoardState *state)
     }
     printf("\n");
 
-    Vec2 trueSize = getTerminalSize();
-    for (int y = 0; y < trueSize.y - 1; y++)
+    showCursorPrintf();
+    // flushCommands();
+
+    // Vec2 trueSize = getTerminalSize();
+    Vec2 trueSize = {150, 21};
+    // int lastColor = BG_COLOR_DEFAULT;
+    size_t lines = 0;
+    // Ok so i have to remove one extra line because otherwise the last newline
+    // breaks everything since it makes the screen scroll down one character...
+    // lso enhltenshoetnseohn
+    for (size_t y = 0; y < trueSize.y - 2; y++)
     {
         // if (y >= trueSize.y - 1)
         // {
@@ -93,12 +124,37 @@ void renderBoard(BoardState *state)
         //     break;
         // }
 
-        for (int x = 0; x < trueSize.x; x++)
+        /*
+        I've been get problems where it overshoots by 1 characters, which is
+        why I use `trueSize.x - 1`.
+        */
+        for (size_t x = 0; x < trueSize.x - 1; x++)
         {
+            // if ((x + y) % 2 == 0)
+            // {
+            //     printf("  ");
+            // }
+            // else
+            // {
+            //     printf("##");
+            // }
+            // continue;
+
             if (x >= state->screenSize.x || y >= state->screenSize.y)
             {
+                // if (x == trueSize.x - 2)
+                // {
+                //     int last = 0;
+
+                //     setFormatColor(BG_COLOR_DEFAULT);
+                //     printf("  ");
+                //     // flushCommands();
+                //     continue;
+                // }
                 setFormatColor(BG_COLOR_DEFAULT);
                 printf("  ");
+                // flushCommands();
+                continue;
             }
             // if (x >= trueSize.x)
             // {
@@ -123,13 +179,23 @@ void renderBoard(BoardState *state)
             if (state->playerPos.x == x && state->playerPos.y == y)
             {
                 setFormatBgRgb(playerColor);
+                // flushCommands();
             }
             else
             {
                 setFormatColor(color);
+                // flushCommands();
             }
             printf("  ");
+            // flushCommands();
         }
-        printf("\r\n");
+        printf("\n");
+        // msleep(10);
+        // flushCommands();
+        lines++;
     }
+    // flushCommands();
+    // msleep(100);
+
+    lines = lines;
 }

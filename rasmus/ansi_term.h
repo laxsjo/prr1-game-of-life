@@ -34,6 +34,11 @@ void setFormatColor(u_int8_t color);
 void setFormatFgRgb(Rgb color);
 void setFormatBgRgb(Rgb color);
 
+void moveCursorHomePrintf();
+void showCursorPrintf();
+void hideCursorPrintf();
+void resetFormatPrintf();
+
 void flushCommands();
 
 void enterNonCanonicalMode();

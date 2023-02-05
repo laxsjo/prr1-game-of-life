@@ -1,7 +1,10 @@
+#include <unistd.h>
+
 #include "../types.h"
 #include "input.h"
 #include "general.h"
 #include "render.h"
+#include "ansi_term.h"
 #include "../melker/getTerminalSize.h"
 
 // Dummy function, while melkers creates the actual function.
@@ -180,7 +183,57 @@ void startEditor(BoardState *state, char *boardName)
 
     // clearScreen();
 
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    renderBoard(state);
+    // sleep(1);
     // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+
+    flushCommands();
 
     // clearScreen();
 
@@ -192,9 +245,9 @@ void startEditor(BoardState *state, char *boardName)
         }
 
         // not necessary
-        clearScreen();
+        // clearScreen();
 
-        renderBoard(state);
+        // renderBoard(state);
     }
 
     cleanUp();

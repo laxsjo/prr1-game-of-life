@@ -12,6 +12,10 @@ void moveCursorHome()
     // printf("\x1b[H");
     write(0, "\x1b[H", 3);
 }
+void moveCursorHomePrintf()
+{
+    printf("\x1b[H");
+}
 
 void activateAlternativeBuffer()
 {
@@ -22,6 +26,7 @@ void activateAlternativeBuffer()
 void disableAlternativeBuffer()
 {
     // why I use write: https://stackoverflow.com/a/16891799/15507414
+    // also: https://docs.oracle.com/cd/E19455-01/806-5257/gen-26/index.html
     // printf("\x1b[?1049l");
     write(0, "\x1b[?1049l", 8);
 }
@@ -30,6 +35,14 @@ void showCursor()
 {
     // printf("\x1b[?25h");
     write(0, "\x1b[?25h", 6);
+}
+void showCursorPrintf()
+{
+    printf("\x1b[?25h");
+}
+void hideCursorPrintf()
+{
+    printf("\x1b[?25l");
 }
 void hideCursor()
 {
@@ -42,6 +55,10 @@ void flushCommands()
     fflush(0);
 }
 
+void resetFormatPrintf()
+{
+    printf("\x1b[0m");
+}
 void resetFormat()
 {
     // printf("\x1b[0m");

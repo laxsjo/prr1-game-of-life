@@ -10,10 +10,7 @@
         "type_traits": "c",
         "input.h": "c",
         "types.h": "c",
-<<<<<<< HEAD
-        "game_logic.h": "c"
-=======
+        "game_logic.h": "c",
         "getterminalsize.h": "c"
->>>>>>> 4a61b05e1111bc8e16b4e68f455eaf52e8f5f926
     }
 }
