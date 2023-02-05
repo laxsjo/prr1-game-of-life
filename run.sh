@@ -1,4 +1,9 @@
 #!/bin/bash
 
-./build.sh
-./gol "${@:2}"
+if ./build.sh; then
+    ./gol "${@:2}"
+else
+    exitCode="$?"
+    echo "build failed with code $exitCode"
+    exit "$exitCode"
+fi

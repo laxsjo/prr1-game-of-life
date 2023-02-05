@@ -17,4 +17,6 @@ fi
 
 if gcc -o test $file types.c rasmus/*.c melker/*.c; then
     echo "created executable 'test'"
+else
+    exit "$?"
 fi

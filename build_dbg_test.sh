@@ -17,4 +17,6 @@ fi
 
 if gcc -o test $file types.c rasmus/*.c melker/*.c -ggdb; then
     echo "created executable 'test', with debug symbols".
+else
+    exit "$?"
 fi
