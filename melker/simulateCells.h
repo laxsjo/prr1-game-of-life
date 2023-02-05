@@ -1,0 +1,3 @@
+void simulateCells();
+
+int simulateSingleCell();

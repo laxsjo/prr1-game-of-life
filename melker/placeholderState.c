@@ -6,8 +6,8 @@
 #include <stdbool.h>
 #include <time.h>
 
-int *makePlaceholderState(BoardState *state, Vec2 *grid){
-    Vec2 gridSize = *grid;
+int makePlaceholderState(BoardState *state){
+    Vec2 gridSize = state->screenSize;
     Vec2 playerPos = {0, 0};
 
     bool (**coords) = malloc(sizeof(bool *)* gridSize.y);
@@ -17,6 +17,7 @@ int *makePlaceholderState(BoardState *state, Vec2 *grid){
 
     for(int x = 0; x < gridSize.x; x++){
         for(int y = 0; y < gridSize.y; y++){
+            //coords[y][x] = rand() % 4;
             coords[y][x] = rand() % 2;
         }
     }
@@ -32,14 +33,12 @@ int *makePlaceholderState(BoardState *state, Vec2 *grid){
     };
     *state = outState;
 
-    printf("Your grid size is as follows:\n%d columns & %d rows\n\n", gridSize.y, gridSize.x);
     
-    printf("Coordinate values:\n");
-    for(int y = 0; y < gridSize.y; y++){
+    /*for(int y = 0; y < gridSize.y; y++){
         for(int x = 0; x < gridSize.x; x++){
             printf("%d ",coords[y][x]); 
         }
         printf("\n");
     }
-    printf("\n");
+    printf("\n");*/
 }
