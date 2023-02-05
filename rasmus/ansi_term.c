@@ -66,16 +66,40 @@ void resetFormat()
     write(0, SEQ_RESET_FORMAT, sizeof(SEQ_RESET_FORMAT) - 1);
 }
 
+char *getSetFormatColor(u_int8_t color)
+{
+    const size_t len = 5;
+    char *out = malloc(len + 1);
+
+    sprintf(out, "\x1b[%um", color);
+    return out;
+}
 void setFormatColor(u_int8_t color)
 {
     printf("\x1b[%um", color);
 }
 
+char *getSetFormatFgRgb(Rgb color)
+{
+    const size_t len = 10 + 3 * 3;
+    char *out = malloc(len + 1);
+
+    sprintf(out, "\x1b[38;2;%u;%u;%um", color.r, color.g, color.b);
+    return out;
+}
 void setFormatFgRgb(Rgb color)
 {
     printf("\x1b[38;2;%u;%u;%um", color.r, color.g, color.b);
 }
 
+char *getSetFormatBgRgb(Rgb color)
+{
+    const size_t len = 10 + 3 * 3;
+    char *out = malloc(len + 1);
+
+    sprintf(out, "\x1b[48;2;%u;%u;%um", color.r, color.g, color.b);
+    return out;
+}
 void setFormatBgRgb(Rgb color)
 {
     printf("\x1b[48;2;%u;%u;%um", color.r, color.g, color.b);

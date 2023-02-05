@@ -1,9 +1,11 @@
 // #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "../types.h"
 #include "stdio.h"
 #include "ansi_term.h"
+#include "general.h"
 #include "../melker/getTerminalSize.h"
 
 const Rgb PLAYER_COLOR = {65, 216, 226};
@@ -75,6 +77,65 @@ void clearScreen()
 
 // void changeFormatColor()
 
+// evil global variable: you can't tell me what to do! >:)
+char *buffer = NULL;
+size_t bufferSize = 0;
+Vec2 bufferScreenSize = {0, 0};
+size_t bufferIndex = 0;
+
+size_t getBufferSize(const Vec2 screenSize)
+{
+    size_t size = 0;
+
+    size += ((2 + 5) * screenSize.x) * screenSize.y; // cell size: two spaces + change bg color sequence len
+    size += screenSize.y;                            // account for newlines
+
+    // this is very unsafe...
+    size += screenSize.x * 2 + 1; // account for top message with a lot of extra margin (there may be zero width characters or unicode characters) + newline at end
+
+    size += 3;  // account for move cursor home sequence
+    size += 1;  // account for terminating null byte
+    size += 10; // some debug leeway
+
+    return size;
+}
+void allocateBuffer(const Vec2 screenSize)
+{
+    size_t size = getBufferSize(screenSize);
+
+    buffer = malloc(size);
+    bufferSize = size;
+    bufferScreenSize = screenSize;
+}
+
+void resetBuffer()
+{
+    bufferIndex = 0;
+}
+
+void writeBuffer(const char *string)
+{
+    size_t len = strlen(string);
+    if (bufferIndex + len > bufferSize)
+    {
+        panic("ran out of buffer size");
+    }
+
+    memcpy(buffer + bufferIndex, string, len);
+
+    bufferIndex += len;
+}
+
+void closeBuffer()
+{
+    if (bufferIndex >= bufferSize)
+    {
+        panic("ran out of buffer size");
+    }
+
+    buffer[bufferIndex++] = '\0';
+}
+
 /*
 Problem: The render function was generally very inconsistent, sometimes
 outputing things in the wrong order.
@@ -90,27 +151,43 @@ acceptable because of the performance.
 Adding a sleep timer of 10ms to each line also seems to fix the issue. But this
 is obviously also too slow.
 
+The final solution seems to have been to create a separate buffer string, which
+I write to during the rendering process, which I then finnally print at the end,
+ensuring that everything is output in sync correctly
+
 source: https://stackoverflow.com/a/71933775/15507414
 
 */
 void renderBoard(BoardState *state)
 {
+    Vec2 trueSize = getTerminalSize();
+
+    if (buffer == NULL || !vec2Eq(bufferScreenSize, trueSize))
+    {
+        allocateBuffer(trueSize);
+    }
+    resetBuffer();
 
     // printf("\x1b[2J");
-    moveCursorHomePrintf();
+    // moveCursorHomePrintf();
+    writeBuffer(SEQ_MOVE_CURSOR_HOME);
 
     if (state->message != NULL)
     {
         // TODO: automatically clip message to terminal width
-        printf("%s", state->message);
+        // printf("%s", state->message);
+        writeBuffer(state->message);
     }
-    printf("\n");
+    // printf("\n");
+    writeBuffer("\n");
 
-    showCursorPrintf();
+    // showCursorPrintf();
     // flushCommands();
 
-    // Vec2 trueSize = getTerminalSize();
-    Vec2 trueSize = {150, 21};
+    char *defaultBgFormat = getSetFormatColor(BG_COLOR_DEFAULT);
+    char *whiteBgFormat = getSetFormatColor(BG_COLOR_WHITE);
+
+    // Vec2 trueSize = {150, 21};
     // int lastColor = BG_COLOR_DEFAULT;
     size_t lines = 0;
     // Ok so i have to remove one extra line because otherwise the last newline
@@ -142,17 +219,10 @@ void renderBoard(BoardState *state)
 
             if (x >= state->screenSize.x || y >= state->screenSize.y)
             {
-                // if (x == trueSize.x - 2)
-                // {
-                //     int last = 0;
-
-                //     setFormatColor(BG_COLOR_DEFAULT);
-                //     printf("  ");
-                //     // flushCommands();
-                //     continue;
-                // }
-                setFormatColor(BG_COLOR_DEFAULT);
-                printf("  ");
+                writeBuffer(defaultBgFormat);
+                writeBuffer("  ");
+                // setFormatColor(BG_COLOR_DEFAULT);
+                // printf("  ");
                 // flushCommands();
                 continue;
             }
@@ -162,40 +232,50 @@ void renderBoard(BoardState *state)
             // }
             bool cell = (state->cells)[y][x];
 
-            int color;
+            char *colorFormat;
             Rgb playerColor;
 
             if (cell)
             {
-                color = BG_COLOR_WHITE;
+                colorFormat = whiteBgFormat;
+                // color = BG_COLOR_WHITE;
                 playerColor = PLAYER_OVERLAY_COLOR;
             }
             else
             {
-                color = BG_COLOR_DEFAULT;
+                colorFormat = defaultBgFormat;
+                // color = BG_COLOR_DEFAULT;
                 playerColor = PLAYER_COLOR;
             }
 
             if (state->playerPos.x == x && state->playerPos.y == y)
             {
-                setFormatBgRgb(playerColor);
+                char *playerFormat = getSetFormatBgRgb(playerColor);
+                writeBuffer(playerFormat);
+                // setFormatBgRgb(playerColor);
                 // flushCommands();
             }
             else
             {
-                setFormatColor(color);
+                writeBuffer(colorFormat);
+                // setFormatColor(color);
                 // flushCommands();
             }
-            printf("  ");
+            writeBuffer("  ");
+            // printf("  ");
             // flushCommands();
         }
-        printf("\n");
+        writeBuffer("\n");
+        // printf("\n");
         // msleep(10);
         // flushCommands();
         lines++;
     }
+    closeBuffer();
     // flushCommands();
     // msleep(100);
+    free(defaultBgFormat);
+    free(whiteBgFormat);
 
-    lines = lines;
+    printf("%s", buffer);
 }

@@ -184,18 +184,20 @@ void startEditor(BoardState *state, char *boardName)
     // clearScreen();
 
     renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
-    renderBoard(state);
+    // sleep(1);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
+    // renderBoard(state);
     // sleep(1);
     // renderBoard(state);
     // sleep(1);
@@ -247,7 +249,7 @@ void startEditor(BoardState *state, char *boardName)
         // not necessary
         // clearScreen();
 
-        // renderBoard(state);
+        renderBoard(state);
     }
 
     cleanUp();

@@ -46,6 +46,10 @@ void showCursorPrintf();
 void hideCursorPrintf();
 void resetFormatPrintf();
 
+char *getSetFormatBgRgb(Rgb color);
+char *getSetFormatFgRgb(Rgb color);
+char *getSetFormatColor(u_int8_t color);
+
 void flushCommands();
 
 void enterNonCanonicalMode();
