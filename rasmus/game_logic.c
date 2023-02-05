@@ -1,5 +1,8 @@
 #include "../types.h"
 #include "input.h"
+#include "general.h"
+#include "render.h"
+#include "../melker/getTerminalSize.h"
 
 // Dummy function, while melkers creates the actual function.
 Vec2 getDummySize1()
@@ -162,4 +165,37 @@ void resizeBoard(BoardState *state, Vec2 newSize)
 
     state->cells = newCells;
     state->screenSize = newSize;
+}
+
+void startEditor(BoardState *state, char *boardName)
+{
+    Vec2 size = getTerminalSize();
+    char message[size.x + 1];
+    snprintf(message, size.x, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: flip selected cell, [Enter]/[Esc]: save and start simulation", boardName);
+    message[size.x] = '\0';
+
+    state->message = message;
+
+    initBoardDisplay();
+
+    // clearScreen();
+
+    // renderBoard(state);
+
+    // clearScreen();
+
+    while (true)
+    {
+        if (takeInputs(state, true))
+        {
+            break;
+        }
+
+        // not necessary
+        clearScreen();
+
+        renderBoard(state);
+    }
+
+    cleanUp();
 }

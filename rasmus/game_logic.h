@@ -9,4 +9,6 @@ bool takeInputs(BoardState *state, bool allowEdit);
 
 void resizeBoard(BoardState *state, Vec2 newSize);
 
+void startEditor(BoardState *state, char *boardName);
+
 #endif
