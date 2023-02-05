@@ -23,6 +23,13 @@
 #define BG_COLOR_WHITE 47
 #define BG_COLOR_DEFAULT 49
 
+#define SEQ_MOVE_CURSOR_HOME "\x1b[H"
+#define SEQ_ACTIVATE_ALTERNATIVE_BUFFER "\x1b[?1049h"
+#define SEQ_DISABLE_ALTERNATIVE_BUFFER "\x1b[?1049l"
+#define SEQ_SHOW_CURSOR "\x1b[?25h"
+#define SEQ_HIDE_CURSOR "\x1b[?25l"
+#define SEQ_RESET_FORMAT "\x1b[0m"
+
 void moveCursorHome();
 void activateAlternativeBuffer();
 void disableAlternativeBuffer();

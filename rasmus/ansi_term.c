@@ -10,17 +10,18 @@
 void moveCursorHome()
 {
     // printf("\x1b[H");
-    write(0, "\x1b[H", 3);
+    //
+    write(0, SEQ_MOVE_CURSOR_HOME, sizeof(SEQ_MOVE_CURSOR_HOME) - 1);
 }
 void moveCursorHomePrintf()
 {
-    printf("\x1b[H");
+    printf(SEQ_MOVE_CURSOR_HOME);
 }
 
 void activateAlternativeBuffer()
 {
     // printf("\x1b[?1049h");
-    write(0, "\x1b[?1049h", 8);
+    write(0, SEQ_ACTIVATE_ALTERNATIVE_BUFFER, sizeof(SEQ_ACTIVATE_ALTERNATIVE_BUFFER) - 1);
 }
 
 void disableAlternativeBuffer()
@@ -28,26 +29,26 @@ void disableAlternativeBuffer()
     // why I use write: https://stackoverflow.com/a/16891799/15507414
     // also: https://docs.oracle.com/cd/E19455-01/806-5257/gen-26/index.html
     // printf("\x1b[?1049l");
-    write(0, "\x1b[?1049l", 8);
+    write(0, SEQ_DISABLE_ALTERNATIVE_BUFFER, sizeof(SEQ_DISABLE_ALTERNATIVE_BUFFER) - 1);
 }
 
 void showCursor()
 {
     // printf("\x1b[?25h");
-    write(0, "\x1b[?25h", 6);
+    write(0, SEQ_SHOW_CURSOR, sizeof(SEQ_SHOW_CURSOR) - 1);
 }
 void showCursorPrintf()
 {
-    printf("\x1b[?25h");
+    printf(SEQ_SHOW_CURSOR);
 }
 void hideCursorPrintf()
 {
-    printf("\x1b[?25l");
+    printf(SEQ_HIDE_CURSOR);
 }
 void hideCursor()
 {
     // printf("\x1b[?25l");
-    write(0, "\x1b[?25l", 6);
+    write(0, SEQ_HIDE_CURSOR, sizeof(SEQ_HIDE_CURSOR) - 1);
 }
 
 void flushCommands()
@@ -57,12 +58,12 @@ void flushCommands()
 
 void resetFormatPrintf()
 {
-    printf("\x1b[0m");
+    printf(SEQ_RESET_FORMAT);
 }
 void resetFormat()
 {
     // printf("\x1b[0m");
-    write(0, "\x1b[0m", 4);
+    write(0, SEQ_RESET_FORMAT, sizeof(SEQ_RESET_FORMAT) - 1);
 }
 
 void setFormatColor(u_int8_t color)
@@ -143,7 +144,7 @@ void unsetTerminalFlags(int flags)
     {
         panic("terminal file descriptor not found :(\r\n");
     }
-    printf("%i\n", fd);
+    // printf("%i\n", fd);
 
     result = tcgetattr(fd, &settings);
     if (result < 0)
