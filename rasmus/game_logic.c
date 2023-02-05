@@ -173,9 +173,9 @@ void resizeBoard(BoardState *state, Vec2 newSize)
 void startEditor(BoardState *state, char *boardName)
 {
     Vec2 size = getTerminalSize();
-    char message[size.x + 1];
-    snprintf(message, size.x, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: flip selected cell, [Enter]/[Esc]: save and start simulation", boardName);
-    message[size.x] = '\0';
+    char message[size.x * 2 + 1];
+    snprintf(message, size.x * 2, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: edit cell, [Enter]/[Esc]: save and start simulation", boardName);
+    message[size.x * 2] = '\0';
 
     state->message = message;
 

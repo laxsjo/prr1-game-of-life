@@ -93,9 +93,9 @@ size_t getBufferSize(const Vec2 screenSize)
     // this is very unsafe...
     size += screenSize.x * 2 + 1; // account for top message with a lot of extra margin (there may be zero width characters or unicode characters) + newline at end
 
-    size += 3;  // account for move cursor home sequence
-    size += 1;  // account for terminating null byte
-    size += 10; // some debug leeway
+    size += 3; // account for move cursor home sequence
+    size += 1; // account for terminating null byte
+    // size += 10; // some debug leeway
 
     return size;
 }
