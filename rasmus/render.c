@@ -168,68 +168,29 @@ void renderBoard(BoardState *state)
     }
     resetBuffer();
 
-    // printf("\x1b[2J");
-    // moveCursorHomePrintf();
     writeBuffer(SEQ_MOVE_CURSOR_HOME);
 
     if (state->message != NULL)
     {
         // TODO: automatically clip message to terminal width
-        // printf("%s", state->message);
         writeBuffer(state->message);
     }
-    // printf("\n");
     writeBuffer("\n");
-
-    // showCursorPrintf();
-    // flushCommands();
 
     char *defaultBgFormat = getSetFormatColor(BG_COLOR_DEFAULT);
     char *whiteBgFormat = getSetFormatColor(BG_COLOR_WHITE);
 
-    // Vec2 trueSize = {150, 21};
-    // int lastColor = BG_COLOR_DEFAULT;
     size_t lines = 0;
-    // Ok so i have to remove one extra line because otherwise the last newline
-    // breaks everything since it makes the screen scroll down one character...
-    // lso enhltenshoetnseohn
-    for (size_t y = 0; y < trueSize.y - 2; y++)
+    for (size_t y = 0; y < trueSize.y - 1; y++)
     {
-        // if (y >= trueSize.y - 1)
-        // {
-        //     // continue;
-        //     break;
-        // }
-
-        /*
-        I've been get problems where it overshoots by 1 characters, which is
-        why I use `trueSize.x - 1`.
-        */
-        for (size_t x = 0; x < trueSize.x - 1; x++)
+        for (size_t x = 0; x < trueSize.x; x++)
         {
-            // if ((x + y) % 2 == 0)
-            // {
-            //     printf("  ");
-            // }
-            // else
-            // {
-            //     printf("##");
-            // }
-            // continue;
-
             if (x >= state->screenSize.x || y >= state->screenSize.y)
             {
                 writeBuffer(defaultBgFormat);
                 writeBuffer("  ");
-                // setFormatColor(BG_COLOR_DEFAULT);
-                // printf("  ");
-                // flushCommands();
                 continue;
             }
-            // if (x >= trueSize.x)
-            // {
-            //     continue;
-            // }
             bool cell = (state->cells)[y][x];
 
             char *colorFormat;
@@ -238,13 +199,11 @@ void renderBoard(BoardState *state)
             if (cell)
             {
                 colorFormat = whiteBgFormat;
-                // color = BG_COLOR_WHITE;
                 playerColor = PLAYER_OVERLAY_COLOR;
             }
             else
             {
                 colorFormat = defaultBgFormat;
-                // color = BG_COLOR_DEFAULT;
                 playerColor = PLAYER_COLOR;
             }
 
@@ -252,28 +211,20 @@ void renderBoard(BoardState *state)
             {
                 char *playerFormat = getSetFormatBgRgb(playerColor);
                 writeBuffer(playerFormat);
-                // setFormatBgRgb(playerColor);
-                // flushCommands();
             }
             else
             {
                 writeBuffer(colorFormat);
-                // setFormatColor(color);
-                // flushCommands();
             }
             writeBuffer("  ");
-            // printf("  ");
-            // flushCommands();
         }
-        writeBuffer("\n");
-        // printf("\n");
-        // msleep(10);
-        // flushCommands();
+        if (y + 1 < trueSize.y - 1)
+        {
+            writeBuffer("\n");
+        }
         lines++;
     }
     closeBuffer();
-    // flushCommands();
-    // msleep(100);
     free(defaultBgFormat);
     free(whiteBgFormat);
 

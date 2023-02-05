@@ -67,6 +67,7 @@ void cleanUp()
         exitNonCanonicalMode();
         initCalled = false;
     }
+    showCursor();
     resetFormat();
 }
 

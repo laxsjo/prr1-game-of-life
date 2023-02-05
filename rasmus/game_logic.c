@@ -1,5 +1,6 @@
 #include <unistd.h>
 
+#include "game_logic.h"
 #include "../types.h"
 #include "input.h"
 #include "general.h"
@@ -20,9 +21,21 @@ bool pointInsideBoard(const BoardState *state, const Vec2 point)
     return point.x >= 0 && point.y >= 0 && point.x < state->screenSize.x && point.y < state->screenSize.y;
 }
 
+bool pointInsideWindow(const Vec2 point)
+{
+    if (point.x < 0 || point.y < 0)
+    {
+        return false;
+    }
+
+    Vec2 screenSize = getTerminalSize();
+
+    return point.x < screenSize.x && point.y < screenSize.y - 1;
+}
+
 void movePlayerIntoBounds(BoardState *state)
 {
-    Vec2 trueSize = getDummySize1();
+    Vec2 trueSize = getTerminalSize();
 
     if (state->playerPos.x < 0)
     {
@@ -46,14 +59,30 @@ void movePlayerIntoBounds(BoardState *state)
     {
         state->playerPos.x = trueSize.x - 1;
     }
-    if (state->playerPos.y >= trueSize.y)
+    if (state->playerPos.y >= trueSize.y - 1)
     {
-        state->playerPos.y = trueSize.y - 1;
+        state->playerPos.y = trueSize.y - 2;
     }
 }
 
 void movePlayerPos(BoardState *state, const Vec2 newPos)
 {
+    if (newPos.x >= 0 && newPos.y >= 0 && !pointInsideBoard(state, newPos) && pointInsideWindow(newPos))
+    {
+        Vec2 newSize;
+
+        if (newPos.x >= state->screenSize.x)
+        {
+            newSize = (Vec2){state->screenSize.x * 2, state->screenSize.y};
+        }
+        else
+        {
+            newSize = (Vec2){state->screenSize.x, state->screenSize.y * 2};
+        }
+
+        resizeBoard(state, newSize);
+    }
+
     state->playerPos = newPos;
     movePlayerIntoBounds(state);
 }
@@ -180,64 +209,6 @@ void startEditor(BoardState *state, char *boardName)
     state->message = message;
 
     initBoardDisplay();
-
-    // clearScreen();
-
-    renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-    // sleep(1);
-    // renderBoard(state);
-
-    flushCommands();
-
-    // clearScreen();
 
     while (true)
     {
