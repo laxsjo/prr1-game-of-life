@@ -24,7 +24,8 @@ bool gameTick(BoardState *state, BoardState *newState){
 
     //BoardState next;
 
-    simulateCells(&state, &newState);
+    simulateCells(state, newState);
+
     /*
     freeBoardCells(state->cells, state->screenSize);
     state->cells = next.cells;

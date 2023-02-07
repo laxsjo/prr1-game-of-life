@@ -87,9 +87,9 @@ void simulateCells(BoardState *state, BoardState *newState){
 
                 if(neighborSum == 3 || neighborSum == 2){
 
-                //printf("%d, %d\n\n", i, j);
-                newState->cells[i][j] = 1;
-                //printf("Value: %d\n\n", newState->cells[i][j]);
+                    //printf("%d, %d\n\n", i, j);
+                    newState->cells[i][j] = 1;
+                    //printf("Value: %d\n\n", newState->cells[i][j]);
                 }
                 else if(neighborSum < 2 || neighborSum > 3){ 
 
@@ -97,13 +97,14 @@ void simulateCells(BoardState *state, BoardState *newState){
                     newState->cells[i][j] = 0;
                     //printf("Value: %d\n\n", newState->cells[i][j]);
                 }
+
             }
             else if(newState->cells[i][j] == 0){
                 if(neighborSum == 3){
 
-                //printf("%d, %d\n\n", i, j);
-                newState->cells[i][j] = 1;
-                //printf("Value: %d\n\n", newState->cells[i][j]);
+                    //printf("%d, %d\n\n", i, j);
+                    newState->cells[i][j] = 1;
+                    //printf("Value: %d\n\n", newState->cells[i][j]);
                 }
             }
             

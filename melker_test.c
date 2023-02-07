@@ -4,6 +4,7 @@
 #include "melker/gameTick.h"
 #include "melker/getTerminalSize.h"
 #include "melker/simulateCells.h"
+#include "melker/startGame.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -17,44 +18,93 @@
 #include "rasmus/input.h"
 #include "rasmus/game_logic.h"
 #include "rasmus/str_utils.h"
+#include <time.h>
+/*
+void startGame(BoardState *state, BoardState *newState){
+    
+    int usleep(useconds_t usec);
+
+    initBoardDisplay();
+
+    bool stopSim = false;
+    int firstLoopCheck = 0;
+
+    while (stopSim != true)
+    {
+        if(firstLoopCheck == 0){
+            renderBoard(newState);
+            sleep(2);
+            firstLoopCheck++;
+        }
+        stopSim = gameTick(state, newState);
+        state = newState;
+        
+        renderBoard(newState);
+        
+        //sleep(1);
+        usleep(200000);
+    }
+
+    cleanUp();
+}
+*/
 
 int main()
 {
 
     BoardState stateInput, next;
-    stateInput.playerPos = (Vec2){0, 0};
-    next.playerPos = (Vec2){0, 0};
-    stateInput.message = "c";
-    next.message = "c";
-    Vec2 size = stateInput.screenSize = (Vec2){60, 30};
-    Vec2 nextSize = next.screenSize = (Vec2){60, 30};
+    //stateInput.playerPos = (Vec2){0, 0};
+    //next.playerPos = (Vec2){0, 0};
+    //stateInput.message = "c";
+    //next.message = "c";
+    //Vec2 size = stateInput.screenSize = (Vec2){40, 15};
+    //Vec2 nextSize = next.screenSize = (Vec2){40, 15};
+
+
+
+
+
+    //HERE, DO THIS, FIX THE CONFIG THING!!!
+    //askConfig(stateInput, next);
+
+
     
+    loadBoard(&stateInput, "board1");
+    loadBoard(&next, "board1");
+    
+
+    startGame(&stateInput, &next);
+
+
     /*
-    //Placeholder values for placeholder state
-    stateInput.cells[10][10];
-    stateInput.playerPos.x = 7;
-    stateInput.playerPos.y = 3;
-    stateInput.screenSize.x = 100;
-    stateInput.screenSize.y = 150;
-    */
-
-    //getTerminalSize();
-    bool stopDummyBool = false;
-
-    srand(time(NULL));
-
-    makePlaceholderState(&stateInput);
-    makePlaceholderState(&next);
-    for(int y = 0; y < stateInput.screenSize.y; y++){
+   for(int y = 0; y < stateInput.screenSize.y; y++){
         for(int x = 0; x < stateInput.screenSize.x; x++){
             printf("%d ",stateInput.cells[y][x]); 
         }
         printf("\n");
     }
     printf("\n");
+    */
+   
+
+    //getTerminalSize();
+    //bool stopDummyBool = false;
+
+    //srand(time(NULL));
+
+    //makePlaceholderState(&stateInput);
+    //makePlaceholderState(&next);
+    /*for(int y = 0; y < stateInput.screenSize.y; y++){
+        for(int x = 0; x < stateInput.screenSize.x; x++){
+            printf("%d ",stateInput.cells[y][x]); 
+        }
+        printf("\n");
+    }
+    printf("\n");
+    */
     //simulateCells(&stateInput, &next);
 
-    
+    /*
     int loopCount = 0;
     while(stopDummyBool != true){
         //printf("Loop %d:\n", loopCount);
@@ -78,27 +128,17 @@ int main()
         //clearScreen();
     }
     
+    */
 
-   
+    //askConfig(&stateInput);
+
+    //askConfig(&stateInput);
     
 
-    //askConfig(&stateInput);
+    //startGame(&stateInput, &next);
+    
 
-    //askConfig(&stateInput);
-/*
-    initBoardDisplay();
 
-    bool stopSim = false;
-
-    while (stopSim != true)
-    {
-        printf("DEBUG\n");
-        stopSim = gameTick(&stateInput, &next);
-    }
-
-    cleanUp();
-
-*/
 
 
     return 0;

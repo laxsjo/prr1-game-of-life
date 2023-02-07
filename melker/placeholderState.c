@@ -17,8 +17,16 @@ int makePlaceholderState(BoardState *state){
 
     for(int x = 0; x < gridSize.x; x++){
         for(int y = 0; y < gridSize.y; y++){
-            //coords[y][x] = rand() % 4;
-            coords[y][x] = rand() % 2;
+
+            int randomizer = rand() % 7;
+            if(randomizer == 0 || randomizer > 1){
+                coords[y][x] = 0;
+            }
+            else{
+                coords[y][x] = 1;
+            }
+
+            //coords[y][x] = rand() % 2;
         }
     }
 
