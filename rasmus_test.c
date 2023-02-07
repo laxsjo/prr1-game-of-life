@@ -10,6 +10,7 @@
 #include "rasmus/input.h"
 #include "rasmus/game_logic.h"
 #include "rasmus/str_utils.h"
+#include "melker/startGame.h"
 
 void createDummyState(BoardState *state)
 {
@@ -70,65 +71,11 @@ int main(int argc)
         panic("save does not exist");
     }
 
-    // char **names;
-    // size_t len = getAvailableSaveNames(&names);
-    // // do stuff with names...
-    // for (size_t i = 0; i < len; i++)
-    // {
-    //     printf("got name %s\n", names[i]);
-    // }
+    startEditor(&state, "board1");
 
-    // freeStrList(names, len);
-    // return 0;
-
-    // list_char_t *list = NULL;
-    // push_back_char(&list, 'A');
-    // push_back_char(&list, 'B');
-    // push_back_char(&list, 'C');
-    // push_back_char(&list, 'D');
-    // push_back_char(&list, '\0');
-
-    // printf("string: %s", list->array);
-
-    // createDummyState(&state);
-    // Vec2 size = {100, 20};
-    // printf("worked: %i\n", result);
-    // printf("size: (%i, %i)\n", state.screenSize.x, state.screenSize.y);
-    // printf("%u\n", state.cells[0][0]);
-    // printf("worked2\n");
-
-    // for (size_t y = 0; y < state.screenSize.y; y++)
-    // {
-    //     for (size_t x = 0; x < state.screenSize.x; x++)
-    //     {
-    //         // printf("worked\n");
-    //         printf("%u ", state.cells[y][x]);
-    //     }
-    //     printf("\n");
-    // }
-
-    // renderBoard(&state);
-
-    // resizeBoard(&state, (Vec2){20, 20});
-
-    startEditor(&state, "hello");
-
-    // initBoardDisplay();
-
-    // state.playerPos.y = 3;
-    // renderBoard(&state);
-
-    // while (getchar() == -1)
-    // {
-    //     msleep(10);
-    // }
-
-    // while (!dummyTick(&state))
-    // {
-    // }
-    // saveBoard(&state, "board1");
-
-    // cleanUp();
+    char *message = "Running simulation for 'board1'";
+    state.message = message;
+    startGame(&state);
 
     return 0;
 }
