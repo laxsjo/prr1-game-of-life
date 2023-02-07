@@ -95,7 +95,7 @@ size_t getBufferSize(const Vec2 screenSize)
 
     size += 3; // account for move cursor home sequence
     size += 1; // account for terminating null byte
-    // size += 10; // some debug leeway
+    size *= 3; // some debug leeway
 
     return size;
 }
@@ -191,7 +191,7 @@ void renderBoard(BoardState *state)
                 writeBuffer("  ");
                 continue;
             }
-            bool cell = (state->cells)[y][x];
+            u_int8_t cell = (state->cells)[y][x];
 
             char *colorFormat;
             Rgb playerColor;
@@ -216,7 +216,12 @@ void renderBoard(BoardState *state)
             {
                 writeBuffer(colorFormat);
             }
-            writeBuffer("  ");
+            // if (cell)
+            //     cell = 5;
+            char temp[5];
+            sprintf(temp, "%d ", (u_int8_t)cell);
+            writeBuffer(temp);
+            // writeBuffer("  ");
         }
         if (y + 1 < trueSize.y - 1)
         {

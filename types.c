@@ -61,7 +61,7 @@ int msleep(long msec)
     return res;
 }
 
-void freeBoardCells(bool **cells, Vec2 size)
+void freeBoardCells(u_int8_t **cells, Vec2 size)
 {
     for (size_t y = 0; y < size.y; y++)
     {

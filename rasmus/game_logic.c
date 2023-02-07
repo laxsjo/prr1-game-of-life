@@ -113,7 +113,7 @@ bool handleInput(const Input input, BoardState *state, const bool allowEdit)
             if (allowEdit)
             {
                 // flip cell value
-                bool *cell = &state->cells[state->playerPos.y][state->playerPos.x];
+                u_int8_t *cell = &state->cells[state->playerPos.y][state->playerPos.x];
                 *cell = !*cell;
             }
             break;
@@ -172,7 +172,7 @@ bool takeInputs(BoardState *state, bool allowEdit)
 
 void resizeBoard(BoardState *state, Vec2 newSize)
 {
-    bool **newCells = malloc(sizeof(*newCells) * newSize.y);
+    u_int8_t **newCells = malloc(sizeof(*newCells) * newSize.y);
     for (size_t y = 0; y < newSize.y; y++)
     {
         newCells[y] = malloc(sizeof(**newCells) * newSize.x);

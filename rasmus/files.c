@@ -263,10 +263,10 @@ BoardState parseBoardContent(const char *boardContent)
     }
 
     // allocate cells
-    bool **cells = malloc(sizeof(bool *) * height);
+    u_int8_t **cells = malloc(sizeof(u_int8_t *) * height);
     for (int i = 0; i < height; i++)
     {
-        cells[i] = malloc(sizeof(bool) * width);
+        cells[i] = malloc(sizeof(u_int8_t) * width);
     }
 
     size_t y = 0;
