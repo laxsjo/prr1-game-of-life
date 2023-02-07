@@ -1,1 +1,1 @@
-int makePlaceholderState();
+int makePlaceholderState(BoardState *state);

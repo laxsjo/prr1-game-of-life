@@ -1,3 +1,3 @@
-void simulateCells();
+void simulateCells(BoardState *state, BoardState *newState);
 
-int simulateSingleCell();
+int simulateSingleCell(BoardState *state, Vec2 cellToSimulate);

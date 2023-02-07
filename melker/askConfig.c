@@ -14,7 +14,7 @@
 #include "startGame.h"
 
 //Function for loading presets, saved board configs, and creating new boards
-void askConfig(BoardState *state, BoardState *newState){
+void askConfig(BoardState *state){
 
     char loadCreate = '*';
 
@@ -43,7 +43,7 @@ void askConfig(BoardState *state, BoardState *newState){
                 {
                     panic("save does not exist");
                 }
-                startGame(state, newState);
+                startGame(state);
             }
             else if(boardChoice == 2){
                 int result = loadBoard(&board, "board2");

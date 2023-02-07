@@ -1,2 +1,2 @@
 
-void askConfig();
+void askConfig(BoardState *state);

@@ -1,1 +1,1 @@
-bool gameTick();
+bool gameTick(BoardState *state, BoardState *newState);

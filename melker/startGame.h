@@ -1,1 +1,1 @@
-void startGame();
+void startGame(BoardState *state);

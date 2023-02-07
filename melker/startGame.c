@@ -19,8 +19,12 @@
 #include "../rasmus/str_utils.h"
 #include <time.h>
 
-void startGame(BoardState *state, BoardState *newState){
+void startGame(BoardState *state){
     
+    BoardState *newState;
+
+    newState = state;
+
     int usleep(useconds_t usec);
 
     initBoardDisplay();

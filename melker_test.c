@@ -51,15 +51,15 @@ void startGame(BoardState *state, BoardState *newState){
 
 int main()
 {
-
-    BoardState stateInput, next;
-    //stateInput.playerPos = (Vec2){0, 0};
-    //next.playerPos = (Vec2){0, 0};
-    //stateInput.message = "c";
-    //next.message = "c";
-    //Vec2 size = stateInput.screenSize = (Vec2){40, 15};
-    //Vec2 nextSize = next.screenSize = (Vec2){40, 15};
-
+    BoardState stateInput;
+    /*
+    stateInput.playerPos = (Vec2){0, 0};
+    next.playerPos = (Vec2){0, 0};
+    stateInput.message = "c";
+    next.message = "c";
+    Vec2 size = stateInput.screenSize = (Vec2){100, 40};
+    Vec2 nextSize = next.screenSize = (Vec2){100, 40};
+    */
 
 
 
@@ -69,11 +69,9 @@ int main()
 
 
     
-    loadBoard(&stateInput, "board1");
-    loadBoard(&next, "board1");
+    loadBoard(&stateInput, "board3");
     
-
-    startGame(&stateInput, &next);
+    startGame(&stateInput);
 
 
     /*
@@ -137,7 +135,6 @@ int main()
 
     //startGame(&stateInput, &next);
     
-
 
 
 
