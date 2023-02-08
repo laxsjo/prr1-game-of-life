@@ -2,6 +2,14 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "build_debug_main",
+            "command": "./build_dbg.sh", // Could be any other shell command
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "type": "shell"
+        },
+        {
             "label": "build_test_debug_rasmus",
             "command": "./build_dbg_test.sh", // Could be any other shell command
             "options": {

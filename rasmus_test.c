@@ -61,24 +61,34 @@ bool dummyTick(BoardState *state)
 int main(int argc)
 {
     BoardState state;
-    int result = loadBoard(&state, "board1");
-    if (result == LOAD_RESULT_FILE_MISSING)
-    {
-        panic("file not found!");
-    }
-    else if (result == LOAD_RESULT_NAME_NOT_FOUND)
-    {
-        panic("save does not exist");
-    }
+    // int result = loadBoard(&state, "board1");
+    // if (result == LOAD_RESULT_FILE_MISSING)
+    // {
+    //     panic("file not found!");
+    // }
+    // else if (result == LOAD_RESULT_NAME_NOT_FOUND)
+    // {
+    //     panic("save does not exist");
+    // }
 
-    startEditor(&state, "board1");
+    bool **cells = createEmptyBoardCells((Vec2){1, 1});
+    state = (BoardState){
+        cells,
+        (Vec2){1, 1},
+        (Vec2){0, 0},
+        NULL,
+        "testing",
+    };
 
-    // test copyBoard
-    BoardState stateCopy = copyBoard(&state);
+    startEditor(&state);
+    saveBoard(&state);
 
-    char *message = "Running simulation for 'board1'";
-    stateCopy.message = message;
-    startGame(&stateCopy);
+    // // test copyBoard
+    // BoardState stateCopy = copyBoard(&state);
+
+    // char *message = "Running simulation for 'board1'";
+    // stateCopy.message = message;
+    // startGame(&stateCopy);
 
     return 0;
 }

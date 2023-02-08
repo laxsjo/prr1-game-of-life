@@ -21,7 +21,6 @@
 
 void startGame(BoardState *state)
 {
-
     BoardState other;
     BoardState *newState;
 
@@ -40,7 +39,8 @@ void startGame(BoardState *state)
         if (firstLoopCheck == 0)
         {
             renderBoard(newState);
-            sleep(2);
+            // sleep(2); // I don't think we should have this, or at least not
+            // for this long /Rasmus
             firstLoopCheck++;
         }
         stopSim = gameTick(state, newState);

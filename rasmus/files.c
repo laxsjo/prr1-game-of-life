@@ -416,12 +416,28 @@ void saveBoard(const BoardState *state)
     if (!nameFound)
     {
         // resize boardSaves
-        BoardSave *newBoardSaves = malloc(sizeof(newBoardSaves) + 1);
+        /* Problem: malloc returned weird error "malloc(): invalid size
+        (unsorted)"
+        The problem was that the newly allocated list was of the wrong size, which
+        caused funky memory behaviour, causing malloc to fail for whatever
+        reason.
+        Basically it was
+        `malloc(sizeof(newBoardSaves) + 1)`
+        but it should have been:
+        `malloc(sizeof(*newBoardSaves) * (boardLen + 1))`
+
+        source: https://linux.die.net/man/3/malloc
+
+        I also forgot to free the old boardSaves list, but that didn't really
+        cause any issuse other than leaking memory.
+        */
+        BoardSave *newBoardSaves = malloc(sizeof(*newBoardSaves) * (boardLen + 1));
         for (int i = 0; i < boardLen; i++)
         {
             newBoardSaves[i] = boardSaves[i];
         }
         boardLen += 1;
+        free(boardSaves);
         boardSaves = newBoardSaves;
 
         boardSaves[boardLen - 1] = (BoardSave){state->saveName, NULL};
@@ -432,6 +448,7 @@ void saveBoard(const BoardState *state)
     size_t height = state->screenSize.y;
 
     size_t boardContentLen = width * height + height; // cells + 1 newline per line
+
     char *boardContent = malloc(boardContentLen + 1);
     boardContent[boardContentLen] = '\0';
 

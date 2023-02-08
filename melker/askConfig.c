@@ -104,7 +104,7 @@ void askConfig(BoardState *state)
         }
         else if (input[0] == 'c')
         {
-            // TODO: This memory will leak! It's probably fine, but anyway...
+            // TODO: This memory will leak! It's probably fine, but still...
             char *name = malloc(41);
             printf("Please enter a name for the new board:\n> ");
             scanf("%s", name);
@@ -113,9 +113,12 @@ void askConfig(BoardState *state)
                 cells,
                 (Vec2){1, 1},
                 (Vec2){0, 0},
-                NULL,
+                "",
                 name,
             };
+
+            char temp;
+            scanf("%c", &temp);
 
             startEditor(state);
 

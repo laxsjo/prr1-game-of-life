@@ -175,16 +175,10 @@ bool **createEmptyBoardCells(Vec2 size)
     bool **newCells = malloc(sizeof(*newCells) * size.y);
     for (size_t y = 0; y < size.y; y++)
     {
-        newCells[y] = malloc(sizeof(**newCells) * size.x);
+        newCells[y] = calloc(size.x, sizeof(**newCells));
     }
 
-    for (size_t y = 0; y < size.y; y++)
-    {
-        for (size_t x = 0; x < size.x; x++)
-        {
-            newCells[y][x] = false;
-        }
-    }
+    return newCells;
 }
 
 void resizeBoard(BoardState *state, Vec2 newSize)
