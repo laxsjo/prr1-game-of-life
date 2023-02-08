@@ -21,6 +21,19 @@
 
 void startGame(BoardState *state)
 {
+    // add message /Rasmus
+    Vec2 size = getTerminalSize();
+    size.x *= 2;
+    char message[101]; // this should be more than enough, right?...
+    snprintf(message, 100, "Simulating board '%s'. [Arrow keys]: move cursor, [Enter]/[Esc]: exit", state->saveName);
+    message[100] = '\0';
+    state->message = message;
+    // // !Potential problem: since we have two states constantly being flipped
+    // // between `state` and `newState`, the other copy doesn't have the
+    // // metadata of the original.
+    // Nvm, since, we copy the board, the information (more accurately the
+    // pointers to the messages, so the information is shared!) is copied...
+
     BoardState other;
     BoardState *newState;
 
