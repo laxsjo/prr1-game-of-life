@@ -392,7 +392,7 @@ int loadBoard(BoardState *board, const char *saveName)
     return LOAD_RESULT_SUCCESS;
 }
 
-void saveBoard(const BoardState *state, char *saveName)
+void saveBoard(const BoardState *state)
 {
     char *content = "";
     readSaveFile(&content);
@@ -406,7 +406,7 @@ void saveBoard(const BoardState *state, char *saveName)
     BoardSave *boardSave;
     for (int i = 0; i < boardLen; i++)
     {
-        if (strcmp(boardSaves[i].name, saveName) == 0)
+        if (strcmp(boardSaves[i].name, state->saveName) == 0)
         {
             nameFound = true;
             boardSave = &boardSaves[i];
@@ -424,7 +424,7 @@ void saveBoard(const BoardState *state, char *saveName)
         boardLen += 1;
         boardSaves = newBoardSaves;
 
-        boardSaves[boardLen - 1] = (BoardSave){saveName, NULL};
+        boardSaves[boardLen - 1] = (BoardSave){state->saveName, NULL};
         boardSave = &boardSaves[boardLen - 1];
     }
 

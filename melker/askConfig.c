@@ -24,10 +24,10 @@ void askConfig(BoardState *state)
 
     while (true)
     {
-        printf("Would you like to load a previously saved, player-made board configuration, load a preset, or create a new board? (S/P/C)\n");
+        printf("Would you like to load a previously saved board[s], load a preset[p], or create a new board[c]?\n");
         scanf("%s", input); // S for Saved player-mades, P for Presets, and C for Creating new boards
 
-        if (input[0] == 'S')
+        if (input[0] == 's')
         {
 
             int boardChoice;
@@ -64,9 +64,9 @@ void askConfig(BoardState *state)
             }
             state->saveName = name;
 
-            startEditor(state, name);
+            startEditor(state);
 
-            saveBoard(state, name);
+            saveBoard(state);
 
             break;
 
@@ -97,14 +97,14 @@ void askConfig(BoardState *state)
             //     }
             // }
         }
-        else if (input[0] == 'P')
+        else if (input[0] == 'p')
         {
             panic("not implemented");
             // printf("-Load preset board list function here-\n");
         }
-        else if (input[0] == 'C')
+        else if (input[0] == 'c')
         {
-            // TODO: This memory will leak!
+            // TODO: This memory will leak! It's probably fine, but anyway...
             char *name = malloc(41);
             printf("Please enter a name for the new board:\n> ");
             scanf("%s", name);
@@ -117,9 +117,9 @@ void askConfig(BoardState *state)
                 name,
             };
 
-            startEditor(state, name);
+            startEditor(state);
 
-            saveBoard(state, name);
+            saveBoard(state);
 
             break;
         }

@@ -9,7 +9,7 @@
 
 int loadBoard(BoardState *board, const char *saveName);
 
-void saveBoard(const BoardState *state, char *saveName);
+void saveBoard(const BoardState *state);
 
 /// Get a list of save names from `.gol.saves.txt` and store them inside
 /// `names`, while returning the length.

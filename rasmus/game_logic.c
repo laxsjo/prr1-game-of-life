@@ -241,7 +241,7 @@ BoardState copyBoard(const BoardState *state)
     return out;
 }
 
-void startEditor(BoardState *state, char *boardName)
+void startEditor(BoardState *state)
 {
     Vec2 size = getTerminalSize();
     char message[size.x * 2 + 1];
