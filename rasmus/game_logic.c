@@ -178,6 +178,12 @@ void resizeBoard(BoardState *state, Vec2 newSize)
         newCells[y] = malloc(sizeof(**newCells) * newSize.x);
     }
 
+    bool **newShouldLive = malloc(sizeof(*newShouldLive) * newSize.y);
+    for (size_t y = 0; y < newSize.y; y++)
+    {
+        newShouldLive[y] = malloc(sizeof(**newShouldLive) * newSize.x);
+    }
+
     for (size_t y = 0; y < newSize.y; y++)
     {
         for (size_t x = 0; x < newSize.x; x++)
@@ -185,17 +191,21 @@ void resizeBoard(BoardState *state, Vec2 newSize)
             if (pointInsideBoard(state, (Vec2){x, y}))
             {
                 newCells[y][x] = state->cells[y][x];
+                newShouldLive[y][x] = state->shouldLive[y][x];
             }
             else
             {
                 newCells[y][x] = 0;
+                newShouldLive[y][x] = 0;
             }
         }
     }
 
     freeBoardCells(state->cells, state->screenSize);
+    freeBoardShouldLive(state->shouldLive, state->screenSize);
 
     state->cells = newCells;
+    state->shouldLive = newShouldLive;
     state->screenSize = newSize;
 }
 

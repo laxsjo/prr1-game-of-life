@@ -65,12 +65,14 @@ bool vec2Eq(Vec2 a, Vec2 b);
 typedef struct
 {
     u_int8_t **cells;
+    bool **shouldLive;
     Vec2 screenSize;
     Vec2 playerPos;
     char *message;
 } BoardState;
 
 void freeBoardCells(u_int8_t **cells, Vec2 size);
+void freeBoardShouldLive(bool **shouldLive, Vec2 size);
 
 void freeBoardMessage(BoardState *state);
 

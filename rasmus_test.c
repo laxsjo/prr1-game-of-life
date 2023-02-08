@@ -12,36 +12,6 @@
 #include "rasmus/str_utils.h"
 #include "melker/startGame.h"
 
-void createDummyState(BoardState *state)
-{
-    Vec2 size = {100, 20};
-
-    // source: https://stackoverflow.com/a/36890904/15507414
-    u_int8_t(**cells) = malloc(sizeof(u_int8_t *) * size.y);
-    for (int i = 0; i < size.y; i++)
-    {
-        cells[i] = malloc(sizeof(u_int8_t) * size.x);
-    }
-    for (int x = 0; x < size.x; x++)
-    {
-        for (int y = 0; y < size.y; y++)
-        {
-            cells[y][x] = rand() % 2;
-        }
-    }
-
-    u_int8_t **cellsPointer = (u_int8_t **)cells;
-
-    cells[0][0] = true;
-
-    BoardState outState = {
-        (u_int8_t **)cells,
-        size,
-        {0, 0},
-    };
-    *state = outState;
-}
-
 bool dummyTick(BoardState *state)
 {
     if (takeInputs(state, true))

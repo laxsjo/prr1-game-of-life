@@ -70,6 +70,15 @@ void freeBoardCells(u_int8_t **cells, Vec2 size)
     free(cells);
 }
 
+void freeBoardShouldLive(bool **shouldLive, Vec2 size)
+{
+    for (size_t y = 0; y < size.y; y++)
+    {
+        free(shouldLive[y]);
+    }
+    free(shouldLive);
+}
+
 void freeBoardMessage(BoardState *state)
 {
     free(state->message);

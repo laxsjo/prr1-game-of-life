@@ -42,7 +42,7 @@ int simulateSingleCell(BoardState *state, Vec2 cellToSimulate)
 
             if ((cellToSimulate.y + i) >= 0 && (cellToSimulate.x + j) >= 0 && (cellToSimulate.y + i) < state->screenSize.y && (cellToSimulate.x + j) < state->screenSize.x)
             {
-                if (state->cells[cellToSimulate.y + i][cellToSimulate.x + j] == 1)
+                if (state->cells[cellToSimulate.y + i][cellToSimulate.x + j])
                 {
                     sum++;
                 }
@@ -81,23 +81,22 @@ void simulateCells(BoardState *state, BoardState *newState)
             //     newState->cells[i][j] = (u_int8_t)neighborSum;
             // }
 
-            // if (newState->cells[i][j])
-            // {
-            //     newState->cells[i][j] = (u_int8_t)neighborSum;
-            //     if (neighborSum < 2 || neighborSum > 3)
-            //     {
+            if (newState->shouldLive[i][j])
+            {
+                if (neighborSum < 2 || neighborSum > 3)
+                {
 
-            //         newState->cells[i][j] = 0;
-            //     }
-            // }
-            // else if (!newState->cells[i][j])
-            // {
-            //     if (neighborSum == 3)
-            //     {
+                    newState->shouldLive[i][j] = false;
+                }
+            }
+            else if (!newState->shouldLive[i][j])
+            {
+                if (neighborSum == 3)
+                {
 
-            //         newState->cells[i][j] = (u_int8_t)neighborSum;
-            //     }
-            // }
+                    newState->shouldLive[i][j] = true;
+                }
+            }
         }
     }
 }

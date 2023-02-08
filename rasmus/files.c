@@ -269,6 +269,12 @@ BoardState parseBoardContent(const char *boardContent)
         cells[i] = malloc(sizeof(u_int8_t) * width);
     }
 
+    bool **shouldLive = malloc(sizeof(bool *) * height);
+    for (int i = 0; i < height; i++)
+    {
+        shouldLive[i] = malloc(sizeof(bool) * width);
+    }
+
     size_t y = 0;
     for (size_t i = 0; i < lineCount; i++)
     {
@@ -291,6 +297,7 @@ BoardState parseBoardContent(const char *boardContent)
 
     BoardState state = {
         cells,
+        shouldLive,
         {width, height},
         {0, 0},
     };

@@ -179,6 +179,8 @@ void renderBoard(BoardState *state)
 
     char *defaultBgFormat = getSetFormatColor(BG_COLOR_DEFAULT);
     char *whiteBgFormat = getSetFormatColor(BG_COLOR_WHITE);
+    char *redBgFormat = getSetFormatColor(BG_COLOR_RED);
+    char *greenBgFormat = getSetFormatColor(BG_COLOR_GREEN);
 
     size_t lines = 0;
     for (size_t y = 0; y < trueSize.y - 1; y++)
@@ -192,19 +194,40 @@ void renderBoard(BoardState *state)
                 continue;
             }
             u_int8_t cell = (state->cells)[y][x];
+            bool shouldLive = (state->shouldLive)[y][x];
 
             char *colorFormat;
             Rgb playerColor;
 
-            if (cell)
+            if (shouldLive)
             {
-                colorFormat = whiteBgFormat;
                 playerColor = PLAYER_OVERLAY_COLOR;
             }
             else
             {
-                colorFormat = defaultBgFormat;
                 playerColor = PLAYER_COLOR;
+            }
+            if (cell)
+            {
+                if (shouldLive)
+                {
+                    colorFormat = greenBgFormat;
+                }
+                else
+                {
+                    colorFormat = redBgFormat;
+                }
+            }
+            else
+            {
+                if (shouldLive)
+                {
+                    colorFormat = greenBgFormat;
+                }
+                else
+                {
+                    colorFormat = defaultBgFormat;
+                }
             }
 
             if (state->playerPos.x == x && state->playerPos.y == y)
