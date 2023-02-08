@@ -50,6 +50,14 @@ void askConfig(BoardState *state)
 
             // printf("1. ???\n2. ___\n");
             scanf("%d", &boardChoice);
+            boardChoice -= 1;
+            if (boardChoice < 0 || boardChoice >= len)
+            {
+                printf("Please choose a number between 0 and %d\n", len);
+                continue;
+            }
+            char temp;
+            scanf("%c", &temp); // scanf("%d") doesn't catch the newline character...
 
             char *name = names[boardChoice];
 
