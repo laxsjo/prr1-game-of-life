@@ -73,9 +73,12 @@ int main(int argc)
 
     startEditor(&state, "board1");
 
+    // test copyBoard
+    BoardState stateCopy = copyBoard(&state);
+
     char *message = "Running simulation for 'board1'";
-    state.message = message;
-    startGame(&state);
+    stateCopy.message = message;
+    startGame(&stateCopy);
 
     return 0;
 }

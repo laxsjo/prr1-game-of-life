@@ -11,6 +11,9 @@ bool takeInputs(BoardState *state, bool allowEdit);
 /// Clips the board content, or pads it with zeros as necessary.
 void resizeBoard(BoardState *state, Vec2 newSize);
 
+/// Create a copy of board and it's content.
+BoardState copyBoard(const BoardState *state);
+
 /// Start editor, allowing user to edit board.
 /// When this function returns, state is ready to be used for the simulation.
 void startEditor(BoardState *state, char *boardName);

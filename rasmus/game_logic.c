@@ -199,6 +199,31 @@ void resizeBoard(BoardState *state, Vec2 newSize)
     state->screenSize = newSize;
 }
 
+BoardState copyBoard(const BoardState *state)
+{
+    BoardState out = *state;
+
+    // allocate new cells
+    bool **newCells = malloc(sizeof(*newCells) * out.screenSize.y);
+    for (size_t i = 0; i < out.screenSize.y; i++)
+    {
+        newCells[i] = malloc(sizeof(**newCells) * out.screenSize.x);
+    }
+
+    // copy values
+    for (size_t x = 0; x < out.screenSize.x; x++)
+    {
+        for (size_t y = 0; y < out.screenSize.y; y++)
+        {
+            newCells[y][x] = state->cells[y][x];
+        }
+    }
+
+    out.cells = newCells;
+
+    return out;
+}
+
 void startEditor(BoardState *state, char *boardName)
 {
     Vec2 size = getTerminalSize();
