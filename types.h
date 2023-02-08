@@ -68,6 +68,7 @@ typedef struct
     Vec2 screenSize;
     Vec2 playerPos;
     char *message;
+    char *saveName;
 } BoardState;
 
 void freeBoardCells(bool **cells, Vec2 size);

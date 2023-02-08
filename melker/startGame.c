@@ -19,11 +19,14 @@
 #include "../rasmus/str_utils.h"
 #include <time.h>
 
-void startGame(BoardState *state){
-    
+void startGame(BoardState *state)
+{
+
+    BoardState other;
     BoardState *newState;
 
-    newState = state;
+    other = copyBoard(state);
+    newState = &other;
 
     int usleep(useconds_t usec);
 
@@ -34,17 +37,20 @@ void startGame(BoardState *state){
 
     while (stopSim != true)
     {
-        if(firstLoopCheck == 0){
+        if (firstLoopCheck == 0)
+        {
             renderBoard(newState);
             sleep(2);
             firstLoopCheck++;
         }
         stopSim = gameTick(state, newState);
+        BoardState *temp = state;
         state = newState;
-        
+        newState = temp;
+
         renderBoard(newState);
-        
-        //sleep(1);
+
+        // sleep(1);
         usleep(200000);
     }
 

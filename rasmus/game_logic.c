@@ -170,6 +170,23 @@ bool takeInputs(BoardState *state, bool allowEdit)
     return false;
 }
 
+bool **createEmptyBoardCells(Vec2 size)
+{
+    bool **newCells = malloc(sizeof(*newCells) * size.y);
+    for (size_t y = 0; y < size.y; y++)
+    {
+        newCells[y] = malloc(sizeof(**newCells) * size.x);
+    }
+
+    for (size_t y = 0; y < size.y; y++)
+    {
+        for (size_t x = 0; x < size.x; x++)
+        {
+            newCells[y][x] = false;
+        }
+    }
+}
+
 void resizeBoard(BoardState *state, Vec2 newSize)
 {
     bool **newCells = malloc(sizeof(*newCells) * newSize.y);
@@ -228,7 +245,7 @@ void startEditor(BoardState *state, char *boardName)
 {
     Vec2 size = getTerminalSize();
     char message[size.x * 2 + 1];
-    snprintf(message, size.x * 2, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: edit cell, [Enter]/[Esc]: save and start simulation", boardName);
+    snprintf(message, size.x * 2, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: edit cell, [Enter]/[Esc]: save and start simulation", state->saveName);
     message[size.x * 2] = '\0';
 
     state->message = message;

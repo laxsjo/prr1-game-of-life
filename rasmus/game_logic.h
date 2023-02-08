@@ -7,6 +7,9 @@ bool pointInsideBoard(const BoardState *state, const Vec2 point);
 
 bool takeInputs(BoardState *state, bool allowEdit);
 
+/// Todo: finish documentation
+bool **createEmptyBoardCells(Vec2 size);
+
 /// Change the size of board.
 /// Clips the board content, or pads it with zeros as necessary.
 void resizeBoard(BoardState *state, Vec2 newSize);
