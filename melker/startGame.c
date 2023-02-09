@@ -37,6 +37,8 @@ void startGame(BoardState *state)
     // TODO: Switch `other` to purely be a 2d-list of cells that gets jugled
     // around.
 
+    growBoardToWindow(state);
+
     bool **other;
 
     other = copyBoardCells(state);

@@ -243,6 +243,29 @@ BoardState copyBoard(const BoardState *state)
     return out;
 }
 
+void growBoardToWindow(BoardState *state)
+{
+    Vec2 screenSize = getTerminalSize();
+
+    bool changed = false;
+    Vec2 newSize = state->screenSize;
+    if (screenSize.x > newSize.x)
+    {
+        newSize.x = screenSize.x;
+        changed = true;
+    }
+    if (screenSize.y > newSize.y)
+    {
+        newSize.y = screenSize.y;
+        changed = true;
+    }
+
+    if (changed)
+    {
+        resizeBoard(state, newSize);
+    }
+}
+
 void startEditor(BoardState *state)
 {
     const char *messageSave = "save and start simulation";

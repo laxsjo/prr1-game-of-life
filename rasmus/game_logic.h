@@ -20,6 +20,9 @@ bool **copyBoardCells(const BoardState *state);
 /// Create a copy of board and it's content.
 BoardState copyBoard(const BoardState *state);
 
+/// Make board at least as large as window.
+void growBoardToWindow(BoardState *state);
+
 /// Start editor, allowing user to edit board.
 /// When this function returns, state is ready to be used for the simulation.
 void startEditor(BoardState *state);
