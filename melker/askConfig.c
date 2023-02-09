@@ -111,7 +111,7 @@ void askConfig(BoardState *state)
 
             char *name = names[boardChoice];
 
-            int result = loadBoard(state, name, false);
+            int result = loadBoard(state, name, true);
             if (result == LOAD_RESULT_FILE_MISSING)
             {
                 panic("couldn't find expected saves file");

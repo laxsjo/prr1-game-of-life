@@ -67,11 +67,11 @@ int main()
     //HERE, DO THIS, FIX THE CONFIG THING!!!
     //askConfig(stateInput, next);
 
-
+    askConfig(&stateInput);
     
-    loadBoard(&stateInput, "board3");
+    //loadBoard(&stateInput, "board3", false);
     
-    startGame(&stateInput);
+    //startGame(&stateInput);
 
 
     /*
