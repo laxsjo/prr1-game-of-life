@@ -96,7 +96,7 @@ size_t getBufferSize(const Vec2 screenSize)
 
     size += 3; // account for move cursor home sequence
     size += 1; // account for terminating null byte
-    // size += 10; // some debug leeway
+    // size *= 3; // some debug leeway
 
     return size;
 }
@@ -135,6 +135,21 @@ void closeBuffer()
     }
 
     buffer[bufferIndex++] = '\0';
+}
+
+/*
+OPTIMIZATION: I optimized the render function immensely by only printing change
+bg color sequences when the background color actually changed since the last
+cell.
+*/
+const char *lastFormat = NULL;
+void changeFormatColor(const char *format)
+{
+    if (lastFormat != format)
+    {
+        writeBuffer(format);
+        lastFormat = format;
+    }
 }
 
 /*
@@ -188,7 +203,8 @@ void renderBoard(BoardState *state)
         {
             if (x >= state->screenSize.x || y >= state->screenSize.y)
             {
-                writeBuffer(defaultBgFormat);
+                // writeBuffer(defaultBgFormat);
+                changeFormatColor(defaultBgFormat);
                 if (x == state->screenSize.x && y < state->screenSize.y)
                 {
                     writeBuffer("│ ");
@@ -209,7 +225,7 @@ void renderBoard(BoardState *state)
             }
             bool cell = (state->cells)[y][x];
 
-            char *colorFormat;
+            const char *colorFormat;
             Rgb playerColor;
 
             if (cell)
@@ -226,11 +242,13 @@ void renderBoard(BoardState *state)
             if (state->playerPos.x == x && state->playerPos.y == y)
             {
                 char *playerFormat = getSetFormatBgRgb(playerColor);
-                writeBuffer(playerFormat);
+                changeFormatColor(playerFormat);
+                // writeBuffer(playerFormat);
             }
             else
             {
-                writeBuffer(colorFormat);
+                changeFormatColor(colorFormat);
+                // writeBuffer(colorFormat);
             }
             writeBuffer("  ");
         }
