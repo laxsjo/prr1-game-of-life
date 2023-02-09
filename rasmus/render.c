@@ -89,6 +89,7 @@ size_t getBufferSize(const Vec2 screenSize)
 
     size += ((2 + 5) * screenSize.x) * screenSize.y; // cell size: two spaces + change bg color sequence len
     size += screenSize.y;                            // account for newlines
+    size += (screenSize.x * 2 + screenSize.y) * 3;   // account for frame unicode chars (three bytes per char)
 
     // this is very unsafe...
     size += screenSize.x * 2 + 1; // account for top message with a lot of extra margin (there may be zero width characters or unicode characters) + newline at end
@@ -187,8 +188,23 @@ void renderBoard(BoardState *state)
         {
             if (x >= state->screenSize.x || y >= state->screenSize.y)
             {
-                writeBuffer(whiteBgFormat);
-                writeBuffer("  ");
+                writeBuffer(defaultBgFormat);
+                if (x == state->screenSize.x && y < state->screenSize.y)
+                {
+                    writeBuffer("│ ");
+                }
+                else if (y == state->screenSize.y && x < state->screenSize.x)
+                {
+                    writeBuffer("──");
+                }
+                else if (x == state->screenSize.x && y == state->screenSize.y)
+                {
+                    writeBuffer("╯ ");
+                }
+                else
+                {
+                    writeBuffer("  ");
+                }
                 continue;
             }
             bool cell = (state->cells)[y][x];
