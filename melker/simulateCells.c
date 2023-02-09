@@ -41,6 +41,10 @@ int simulateSingleCell(BoardState *state, Vec2 cellToSimulate)
 
         for (int j = -1; j < 2; j++)
         {
+            if (i == 0 && j == 0)
+            {
+                continue;
+            }
             // printf("%d, %d\n", i, j);
             // printf("CellToSimulate coords: %d, %d\n\n", cellToSimulate.y, cellToSimulate.x);
             /*
@@ -65,11 +69,11 @@ int simulateSingleCell(BoardState *state, Vec2 cellToSimulate)
     }
 
     // printf("Sum: %d\n\n", sum);
-    if (state->cells[cellToSimulate.y][cellToSimulate.x] == 1)
-    {
-        sum--;
-        // printf("New Sum: %d\n\n", sum);
-    }
+    // if (state->cells[cellToSimulate.y][cellToSimulate.x] == 1)
+    // {
+    //     sum--;
+    //     // printf("New Sum: %d\n\n", sum);
+    // }
     // printf("Sum: %d\n\n", sum);
 
     return sum;
@@ -77,70 +81,33 @@ int simulateSingleCell(BoardState *state, Vec2 cellToSimulate)
 
 void simulateCells(BoardState *state, bool **newCells)
 {
-
-    // makePlaceholderState(&newState);
-
     // Simulate board changes to next per cell
     for (int i = 0; i < state->screenSize.y; i++)
     {
 
         for (int j = 0; j < state->screenSize.x; j++)
         {
-
-            // printf("COORDS: %d, %d\n\n", i, j);
-
             int neighborSum = simulateSingleCell(state, (Vec2){j, i});
 
-            if (newCells[i][j] == 1)
+            if (state->cells[i][j])
             {
 
                 if (neighborSum == 3 || neighborSum == 2)
                 {
-
-                    // printf("%d, %d\n\n", i, j);
                     newCells[i][j] = 1;
-                    // printf("Value: %d\n\n", newState->cells[i][j]);
                 }
                 else if (neighborSum < 2 || neighborSum > 3)
                 {
-
-                    // printf("%d, %d\n\n", i, j);
                     newCells[i][j] = 0;
-                    // printf("Value: %d\n\n", newState->cells[i][j]);
                 }
             }
-            else if (newCells[i][j] == 0)
+            else
             {
                 if (neighborSum == 3)
                 {
-
-                    // printf("%d, %d\n\n", i, j);
                     newCells[i][j] = 1;
-                    // printf("Value: %d\n\n", newState->cells[i][j]);
                 }
             }
         }
     }
-
-    /*
-    for(int y = 0; y < newState->screenSize.y; y++){
-        for(int x = 0; x < newState->screenSize.x; x++){
-            printf("%d ", newState->cells[y][x]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-    */
-
-    //*state = newState;
-    /*
-    //printf("Now the old state gets the new states values:\n");
-    for(int y = 0; y < state->screenSize.y; y++){
-        for(int x = 0; x < state->screenSize.x; x++){
-            printf("%d ", state->cells[y][x]);
-        }
-        printf("\n");
-    }
-    printf("\n");
-    */
 }

@@ -187,7 +187,7 @@ void renderBoard(BoardState *state)
         {
             if (x >= state->screenSize.x || y >= state->screenSize.y)
             {
-                writeBuffer(defaultBgFormat);
+                writeBuffer(whiteBgFormat);
                 writeBuffer("  ");
                 continue;
             }

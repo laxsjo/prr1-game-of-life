@@ -58,6 +58,7 @@ void startGame(BoardState *state)
             firstLoopCheck++;
         }
         stopSim = gameTick(state, other);
+
         bool **temp = state->cells;
         state->cells = other;
         other = temp;
