@@ -26,6 +26,13 @@ bool gameTick(BoardState *state, bool **newCells)
     // BoardState next;
 
     simulateCells(state, newCells);
+    for (size_t x = 0; x < state->screenSize.x; x++)
+    {
+        for (size_t y = 0; y < state->screenSize.y; y++)
+        {
+            state->cells[y][x] = newCells[y][x];
+        }
+    }
 
     /*
     freeBoardCells(state->cells, state->screenSize);
