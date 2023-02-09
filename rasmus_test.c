@@ -58,37 +58,44 @@ bool dummyTick(BoardState *state)
     return false;
 }
 
-int main(int argc)
+bool randomBoolWithProbability(float p)
 {
-    BoardState state;
-    // int result = loadBoard(&state, "board1");
-    // if (result == LOAD_RESULT_FILE_MISSING)
-    // {
-    //     panic("file not found!");
-    // }
-    // else if (result == LOAD_RESULT_NAME_NOT_FOUND)
-    // {
-    //     panic("save does not exist");
-    // }
+    // source: https://stackoverflow.com/a/65427060/15507414
+    int percent = (int)(p * 100.);
 
-    bool **cells = createEmptyBoardCells((Vec2){1, 1});
-    state = (BoardState){
-        cells,
-        (Vec2){1, 1},
-        (Vec2){0, 0},
-        NULL,
-        "testing",
-    };
+    int result = rand() % 100;
+    return result < percent;
+}
 
-    startEditor(&state);
-    saveBoard(&state);
+int main(int argc, char **argv)
+{
+    float probability;
+    if (argc < 2)
+    {
+        panic("no probability argument given");
+    }
+    sscanf(argv[1], "%f", &probability);
 
-    // // test copyBoard
-    // BoardState stateCopy = copyBoard(&state);
+    srand(time(0));
+    for (size_t i = 0; i < 20; i++)
+    {
+        char buffer[61];
+        buffer[60] = '\0';
 
-    // char *message = "Running simulation for 'board1'";
-    // stateCopy.message = message;
-    // startGame(&stateCopy);
+        for (size_t j = 0; j < 60; j++)
+        {
+            bool random = randomBoolWithProbability(probability);
+            if (random)
+            {
+                buffer[j] = '1';
+            }
+            else
+            {
+                buffer[j] = '0';
+            }
+        }
+        printf("%s\n", buffer);
+    }
 
     return 0;
 }
