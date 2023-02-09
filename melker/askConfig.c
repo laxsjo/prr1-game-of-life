@@ -24,7 +24,7 @@ void askConfig(BoardState *state)
 
     while (true)
     {
-        printf("Would you like to load a previously saved board[s], load a preset[p], or create a new board[c]?\n");
+        printf("Would you like to load a previously saved board, load a preset, or create a new board [s/p/c]?\n> ");
         scanf("%s", input); // S for Saved player-mades, P for Presets, and C for Creating new boards
 
         if (input[0] == 's')
