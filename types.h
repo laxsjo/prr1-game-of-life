@@ -69,6 +69,8 @@ typedef struct
     Vec2 playerPos;
     char *message;
     char *saveName;
+    bool isPreset;
+    bool shouldSave;
 } BoardState;
 
 void freeBoardCells(bool **cells, Vec2 size);

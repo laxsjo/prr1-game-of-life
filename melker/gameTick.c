@@ -20,23 +20,24 @@
 #include "getTerminalSize.h"
 #include "simulateCells.h"
 
-bool gameTick(BoardState *state, BoardState *newState){
+bool gameTick(BoardState *state, bool **newCells)
+{
 
-    //BoardState next;
+    // BoardState next;
 
-    simulateCells(state, newState);
+    simulateCells(state, newCells);
 
     /*
     freeBoardCells(state->cells, state->screenSize);
     state->cells = next.cells;
     */
-    
 
     bool stop = takeInputs(state, false);
-    if(stop == true){
+    if (stop == true)
+    {
         printf("STOP!\n");
         return true;
     }
-    
+
     return false;
 }

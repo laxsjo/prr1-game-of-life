@@ -37,11 +37,9 @@ void startGame(BoardState *state)
     // TODO: Switch `other` to purely be a 2d-list of cells that gets jugled
     // around.
 
-    BoardState other;
-    BoardState *newState;
+    bool **other;
 
-    other = copyBoard(state);
-    newState = &other;
+    other = copyBoardCells(state);
 
     int usleep(useconds_t usec);
 
@@ -54,17 +52,17 @@ void startGame(BoardState *state)
     {
         if (firstLoopCheck == 0)
         {
-            renderBoard(newState);
+            renderBoard(state);
             // sleep(2); // I don't think we should have this, or at least not
             // for this long /Rasmus
             firstLoopCheck++;
         }
-        stopSim = gameTick(state, newState);
-        BoardState *temp = state;
-        state = newState;
-        newState = temp;
+        stopSim = gameTick(state, other);
+        bool **temp = state->cells;
+        state->cells = other;
+        other = temp;
 
-        renderBoard(newState);
+        renderBoard(state);
 
         // sleep(1);
         usleep(200000);

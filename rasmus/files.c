@@ -29,6 +29,8 @@ void freeBoardSave(BoardSave save)
 /*
 Load content of .gol.saves.txt into fileContent.
 
+Make sure to free fileContent.
+
 returns LOAD_RESULT_FILE_MISSING, if the file does not exist,
 or LOAD_RESULT_SUCCESS on success.
 */
@@ -64,6 +66,38 @@ int readSaveFile(char **fileContent)
 
     *fileContent = content;
     return LOAD_RESULT_SUCCESS;
+}
+
+/*
+Load content of preset 'file' into fileContent.
+
+Make sure to free fileContent.
+Always succeeds.
+*/
+void readPresetFile(char **fileContent)
+{
+    const char *presetFileContent =
+        "[preset1]"
+        "0000000000"
+        "0000000100"
+        "0011100100"
+        "0000000100"
+        "0000000000"
+        "[glider]"
+        "000000000000000000000000"
+        "001000000000000000000000"
+        "000100000000000000000000"
+        "011100000000000000000000"
+        "000000000000000000000000"
+        "000000000000000000000000"
+        "000000000000000000000000"
+        "000000000000000000000000"
+        "000000000000000000000000";
+
+    size_t len = strlen(presetFileContent);
+
+    *fileContent = malloc(len + 1);
+    strcpy(*fileContent, presetFileContent);
 }
 
 void writeSaveFile(const char *content)
@@ -346,13 +380,20 @@ void createFileContentFromBoardList(char **fileContent, const BoardSave *boardLi
 Returns LOAD_RESULT_*
 Make sure you check for errors!
 */
-int loadBoard(BoardState *board, const char *saveName)
+int loadBoard(BoardState *board, const char *saveName, const bool isPreset)
 {
     char *content;
-    int result = readSaveFile(&content);
-    if (result == LOAD_RESULT_FILE_MISSING)
+    if (!isPreset)
     {
-        return LOAD_RESULT_FILE_MISSING;
+        int result = readSaveFile(&content);
+        if (result == LOAD_RESULT_FILE_MISSING)
+        {
+            return LOAD_RESULT_FILE_MISSING;
+        }
+    }
+    else
+    {
+        readPresetFile(&content);
     }
 
     BoardSave *boardSaves;
@@ -382,6 +423,8 @@ int loadBoard(BoardState *board, const char *saveName)
 
     // parse content
     *board = parseBoardContent(boardSave.content);
+    board->isPreset = isPreset;
+    board->shouldSave = !isPreset;
 
     for (size_t i = 0; i < boardLen; i++)
     {
@@ -481,16 +524,23 @@ void saveBoard(const BoardState *state)
     free(newContent);
 }
 
-size_t getAvailableSaveNames(char ***names)
+size_t getAvailableSaveNames(char ***names, const bool getPresetNames)
 {
     char *content;
 
-    int result = readSaveFile(&content);
-
-    if (result == LOAD_RESULT_FILE_MISSING)
+    if (getPresetNames)
     {
-        *names = malloc(0);
-        return 0;
+        readPresetFile(&content);
+    }
+    else
+    {
+        int result = readSaveFile(&content);
+
+        if (result == LOAD_RESULT_FILE_MISSING)
+        {
+            *names = malloc(0);
+            return 0;
+        }
     }
 
     BoardSave *saves;

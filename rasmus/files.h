@@ -7,7 +7,7 @@
 #define LOAD_RESULT_NAME_NOT_FOUND 1
 #define LOAD_RESULT_FILE_MISSING 2
 
-int loadBoard(BoardState *board, const char *saveName);
+int loadBoard(BoardState *board, const char *saveName, const bool isPreset);
 
 void saveBoard(const BoardState *state);
 
@@ -35,6 +35,6 @@ void saveBoard(const BoardState *state);
 ///     freeStrList(names, len)
 /// }
 /// ```
-size_t getAvailableSaveNames(char ***names);
+size_t getAvailableSaveNames(char ***names, const bool getPresetNames);
 
 #endif

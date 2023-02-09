@@ -14,6 +14,9 @@ bool **createEmptyBoardCells(Vec2 size);
 /// Clips the board content, or pads it with zeros as necessary.
 void resizeBoard(BoardState *state, Vec2 newSize);
 
+/// Create a copy of a boards content.
+bool **copyBoardCells(const BoardState *state);
+
 /// Create a copy of board and it's content.
 BoardState copyBoard(const BoardState *state);
 

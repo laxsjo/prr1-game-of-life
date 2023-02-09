@@ -210,25 +210,33 @@ void resizeBoard(BoardState *state, Vec2 newSize)
     state->screenSize = newSize;
 }
 
+bool **copyBoardCells(const BoardState *state)
+{
+    // allocate new cells
+    bool **newCells = malloc(sizeof(*newCells) * state->screenSize.y);
+    for (size_t i = 0; i < state->screenSize.y; i++)
+    {
+        newCells[i] = malloc(sizeof(**newCells) * state->screenSize.x);
+    }
+
+    // copy values
+    for (size_t x = 0; x < state->screenSize.x; x++)
+    {
+        for (size_t y = 0; y < state->screenSize.y; y++)
+        {
+            newCells[y][x] = state->cells[y][x];
+        }
+    }
+
+    return newCells;
+}
+
 BoardState copyBoard(const BoardState *state)
 {
     BoardState out = *state;
 
     // allocate new cells
-    bool **newCells = malloc(sizeof(*newCells) * out.screenSize.y);
-    for (size_t i = 0; i < out.screenSize.y; i++)
-    {
-        newCells[i] = malloc(sizeof(**newCells) * out.screenSize.x);
-    }
-
-    // copy values
-    for (size_t x = 0; x < out.screenSize.x; x++)
-    {
-        for (size_t y = 0; y < out.screenSize.y; y++)
-        {
-            newCells[y][x] = state->cells[y][x];
-        }
-    }
+    bool **newCells = copyBoardCells(state);
 
     out.cells = newCells;
 
@@ -237,9 +245,20 @@ BoardState copyBoard(const BoardState *state)
 
 void startEditor(BoardState *state)
 {
+    const char *messageSave = "save and start simulation";
+    const char *messageNoSave = "start simulation";
+    const char *enterMessage;
+    if (state->shouldSave)
+    {
+        enterMessage = messageSave;
+    }
+    else
+    {
+        enterMessage = messageNoSave;
+    }
     Vec2 size = getTerminalSize();
     char message[size.x * 2 + 1];
-    snprintf(message, size.x * 2, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: edit cell, [Enter]/[Esc]: save and start simulation", state->saveName);
+    snprintf(message, size.x * 2, "Editing board '%s'. [Arrow keys]: move cursor, [Space]: edit cell, [Enter]/[Esc]: %s", state->saveName, enterMessage);
     message[size.x * 2] = '\0';
 
     state->message = message;

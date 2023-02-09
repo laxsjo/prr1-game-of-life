@@ -1,3 +1,3 @@
 #include "../types.h"
 
-bool gameTick(BoardState *state, BoardState *newState);
+bool gameTick(BoardState *state, bool **newCells);

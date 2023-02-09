@@ -19,6 +19,7 @@ void askConfig(BoardState *state)
 
     char loadCreate = '*';
     char input[40];
+    char throwaway[10];
 
     BoardState board;
 
@@ -32,7 +33,7 @@ void askConfig(BoardState *state)
 
             int boardChoice;
             char **names;
-            int len = getAvailableSaveNames(&names);
+            int len = getAvailableSaveNames(&names, false);
             if (len == 0)
             {
                 printf("Sorry, there were no saves available.\n");
@@ -61,7 +62,7 @@ void askConfig(BoardState *state)
 
             char *name = names[boardChoice];
 
-            int result = loadBoard(state, name);
+            int result = loadBoard(state, name, false);
             if (result == LOAD_RESULT_FILE_MISSING)
             {
                 panic("couldn't find expected saves file");
@@ -77,38 +78,76 @@ void askConfig(BoardState *state)
             saveBoard(state);
 
             break;
-
-            // if (boardChoice == 1)
-            // {
-
-            //     //Fix below!!!!!!!!!!!!!!!!!!!!!!!!
-            //     int result = loadBoard(&board, "board1");
-            //     if (result == LOAD_RESULT_FILE_MISSING)
-            //     {
-            //         panic("file not found!");
-            //     }
-            //     else if (result == LOAD_RESULT_NAME_NOT_FOUND)
-            //     {
-            //         panic("save does not exist");
-            //     }
-            //     startGame(state);
-            // }
-            // else if(boardChoice == 2){
-            //     int result = loadBoard(&board, "board2");
-            //     if (result == LOAD_RESULT_FILE_MISSING)
-            //     {
-            //         panic("file not found!");
-            //     }
-            //     else if (result == LOAD_RESULT_NAME_NOT_FOUND)
-            //     {
-            //         panic("save does not exist");
-            //     }
-            // }
         }
         else if (input[0] == 'p')
         {
-            panic("not implemented");
-            // printf("-Load preset board list function here-\n");
+            int boardChoice;
+            char **names;
+            int len = getAvailableSaveNames(&names, true);
+            if (len == 0)
+            {
+                printf("Sorry, there were no presets available.\n");
+                continue;
+            }
+            // printf("Okay! Which board would you like to simulate of the ones mentioned below?\n");
+
+            printf("Available presets:\n");
+            for (int i = 0; i < len; i++)
+            {
+                printf("%d: ", i + 1);
+                printf("%s\n", names[i]);
+            }
+            printf("Choose a number: ");
+
+            scanf("%d", &boardChoice);
+            boardChoice -= 1;
+            if (boardChoice < 0 || boardChoice >= len)
+            {
+                printf("Please choose a number between 0 and %d\n", len);
+                continue;
+            }
+            char temp;
+            scanf("%c", &temp); // scanf("%d") doesn't catch the newline character...
+
+            char *name = names[boardChoice];
+
+            int result = loadBoard(state, name, false);
+            if (result == LOAD_RESULT_FILE_MISSING)
+            {
+                panic("couldn't find expected saves file");
+            }
+            if (result == LOAD_RESULT_NAME_NOT_FOUND)
+            {
+                panic("couldn't find choosen save");
+            }
+            state->saveName = name;
+
+            printf("Do you wan't to save the modifications to this preset [y/n]? ");
+            scanf("%s", input);
+            scanf("%c", throwaway); // get rid of trailing newline
+            if (input[0] == 'y')
+            {
+                printf("Please enter a new name\n> ");
+                name = malloc(41);
+                scanf("%s", name);
+                scanf("%c", throwaway); // get rid of trailing newline
+
+                state->saveName = name;
+                state->shouldSave = true;
+            }
+            else
+            {
+                state->shouldSave = false;
+            }
+
+            startEditor(state);
+
+            if (state->shouldSave)
+            {
+                saveBoard(state);
+            }
+
+            break;
         }
         else if (input[0] == 'c')
         {
@@ -123,6 +162,8 @@ void askConfig(BoardState *state)
                 (Vec2){0, 0},
                 "",
                 name,
+                false,
+                true,
             };
 
             char temp;
