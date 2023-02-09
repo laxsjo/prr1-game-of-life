@@ -65,9 +65,9 @@ void movePlayerIntoBounds(BoardState *state)
     }
 }
 
-void movePlayerPos(BoardState *state, const Vec2 newPos)
+void movePlayerPos(BoardState *state, const Vec2 newPos, const bool autoResize)
 {
-    if (newPos.x >= 0 && newPos.y >= 0 && !pointInsideBoard(state, newPos) && pointInsideWindow(newPos))
+    if (autoResize && newPos.x >= 0 && newPos.y >= 0 && !pointInsideBoard(state, newPos) && pointInsideWindow(newPos))
     {
         Vec2 newSize;
 
@@ -93,16 +93,16 @@ bool handleInput(const Input input, BoardState *state, const bool allowEdit)
     switch (input.type)
     {
     case InputUp:
-        movePlayerPos(state, (Vec2){state->playerPos.x, state->playerPos.y - 1});
+        movePlayerPos(state, (Vec2){state->playerPos.x, state->playerPos.y - 1}, allowEdit);
         break;
     case InputDown:
-        movePlayerPos(state, (Vec2){state->playerPos.x, state->playerPos.y + 1});
+        movePlayerPos(state, (Vec2){state->playerPos.x, state->playerPos.y + 1}, allowEdit);
         break;
     case InputRight:
-        movePlayerPos(state, (Vec2){state->playerPos.x + 1, state->playerPos.y});
+        movePlayerPos(state, (Vec2){state->playerPos.x + 1, state->playerPos.y}, allowEdit);
         break;
     case InputLeft:
-        movePlayerPos(state, (Vec2){state->playerPos.x - 1, state->playerPos.y});
+        movePlayerPos(state, (Vec2){state->playerPos.x - 1, state->playerPos.y}, allowEdit);
         break;
     case InputNormal:
         test = true;
