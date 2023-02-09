@@ -25,7 +25,7 @@ void askConfig(BoardState *state)
 
     while (true)
     {
-        printf("Would you like to load a previously saved board, load a preset, or create a new board [s/p/c]?\n> ");
+        printf("Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\n> ");
         scanf("%s", input); // S for Saved player-mades, P for Presets, and C for Creating new boards
 
         if (input[0] == 's')
@@ -54,7 +54,7 @@ void askConfig(BoardState *state)
             boardChoice -= 1;
             if (boardChoice < 0 || boardChoice >= len)
             {
-                printf("Please choose a number between 0 and %d\n", len);
+                printf("Please choose a number between 1 and %d\n", len);
                 continue;
             }
             char temp;
@@ -103,7 +103,7 @@ void askConfig(BoardState *state)
             boardChoice -= 1;
             if (boardChoice < 0 || boardChoice >= len)
             {
-                printf("Please choose a number between 0 and %d\n", len);
+                printf("Please choose a number between 1 and %d\n", len);
                 continue;
             }
             char temp;
@@ -122,7 +122,7 @@ void askConfig(BoardState *state)
             }
             state->saveName = name;
 
-            printf("Do you wan't to save the modifications to this preset [y/n]? ");
+            printf("Do you wan't to save any modifications you make to this preset? [y/n]\n> ");
             scanf("%s", input);
             scanf("%c", throwaway); // get rid of trailing newline
             if (input[0] == 'y')
