@@ -609,13 +609,21 @@ int loadBoard(BoardState *board, const char *saveName, const bool isPreset)
 
 void saveBoard(const BoardState *state)
 {
-    char *content = "";
-    readSaveFile(&content);
-
     BoardSave *boardSaves;
+    int boardLen;
 
-    int boardLen = separateBoards(content, &boardSaves);
-    free(content);
+    char *content = "";
+    int result = readSaveFile(&content);
+    if (result == LOAD_RESULT_SUCCESS)
+    {
+        int boardLen = separateBoards(content, &boardSaves);
+        free(content);
+    }
+    else
+    {
+        boardSaves = malloc(0);
+        boardLen = 0;
+    }
 
     bool nameFound = false;
     BoardSave *boardSave;
