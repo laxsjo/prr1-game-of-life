@@ -63,9 +63,9 @@ void cleanUp()
     {
         fcntl(0, F_SETFL, fcntl_default);
 
-        exitNonCanonicalMode();
         initCalled = false;
     }
+    exitNonCanonicalMode();
     disableAlternativeBuffer();
     showCursor();
     resetFormat();

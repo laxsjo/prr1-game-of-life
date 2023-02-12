@@ -197,14 +197,26 @@ void unsetTerminalFlags(int flags)
     }
 }
 
+volatile sig_atomic_t nonCanonicalModeActive = 0;
+
 void enterNonCanonicalMode()
 {
-    // source: https://www.gnu.org/software/libc/manual/html_node/Local-Modes.html
-    unsetTerminalFlags(ICANON | ECHO);
+    if (!nonCanonicalModeActive)
+    {
+        nonCanonicalModeActive = 1;
+
+        // source: https://www.gnu.org/software/libc/manual/html_node/Local-Modes.html
+        unsetTerminalFlags(ICANON | ECHO);
+    }
 }
 
 void exitNonCanonicalMode()
 {
-    // source: https://www.gnu.org/software/libc/manual/html_node/Local-Modes.html
-    setTerminalFlags(ICANON | ECHO);
+    if (nonCanonicalModeActive)
+    {
+        nonCanonicalModeActive = 0;
+
+        // source: https://www.gnu.org/software/libc/manual/html_node/Local-Modes.html
+        setTerminalFlags(ICANON | ECHO);
+    }
 }

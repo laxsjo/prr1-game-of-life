@@ -289,7 +289,7 @@ void askConfig(BoardState *state)
             // ask player for board name
             system("clear");
             char *name = malloc(41);
-            speakGen(6, "Please enter a name for the new board:\n", false);
+            // speakGen(6, "Please enter a name for the new board:\n", false);
             printFace(false);
             printf("Please enter a name for the new board:\n> ");
 
