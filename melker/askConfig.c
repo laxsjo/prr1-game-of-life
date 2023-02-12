@@ -31,8 +31,7 @@ void askConfig(BoardState *state)
     while (true)
     {
         // enable raw mode and ask player for board options
-        //  enableRawMode();
-        //  speakGen(7, "Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n", false);
+        enterNonCanonicalMode();
         printFace(false);
         printf("Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n");
 
@@ -41,8 +40,7 @@ void askConfig(BoardState *state)
         {
 
             char c = '\0';
-            if (read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN)
-                die("read");
+            read(STDIN_FILENO, &c, 1);
             /*
             if(iscntrl(c)) {
                 printf("%d\r\n", c);
@@ -56,7 +54,7 @@ void askConfig(BoardState *state)
                 break;
             }
         }
-        disableRawMode();
+        exitNonCanonicalMode();
 
         if (input[0] == 's')
         {
@@ -192,7 +190,7 @@ void askConfig(BoardState *state)
                 printFace(true);
                 usleep(500000);
 
-                enableRawMode();
+                enterNonCanonicalMode();
 
                 for (int i = 0; i < 3; i++)
                 {
@@ -208,8 +206,8 @@ void askConfig(BoardState *state)
                 {
 
                     char c = '\0';
-                    if (read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN)
-                        die("read");
+                    read(STDIN_FILENO, &c, 1);
+
                     /*
                     if(iscntrl(c)) {
                         printf("%d\r\n", c);
@@ -222,7 +220,7 @@ void askConfig(BoardState *state)
                         break;
                     }
                 }
-                disableRawMode();
+                exitNonCanonicalMode();
             }
             boardChoice -= 1;
             if (boardChoice < 0 || boardChoice >= len)
