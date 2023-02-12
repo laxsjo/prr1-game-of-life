@@ -2,6 +2,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <signal.h>
 
 #include "../types.h"
 #include "ansi_term.h"
@@ -18,18 +19,28 @@ void moveCursorHomePrintf()
     printf(SEQ_MOVE_CURSOR_HOME);
 }
 
+volatile sig_atomic_t alternativeBufferCalled = 0;
+
 void activateAlternativeBuffer()
 {
+    if (!alternativeBufferCalled)
+    {
+        alternativeBufferCalled = 1;
+        write(0, SEQ_ACTIVATE_ALTERNATIVE_BUFFER, sizeof(SEQ_ACTIVATE_ALTERNATIVE_BUFFER) - 1);
+    }
     // printf("\x1b[?1049h");
-    write(0, SEQ_ACTIVATE_ALTERNATIVE_BUFFER, sizeof(SEQ_ACTIVATE_ALTERNATIVE_BUFFER) - 1);
 }
 
 void disableAlternativeBuffer()
 {
-    // why I use write: https://stackoverflow.com/a/16891799/15507414
-    // also: https://docs.oracle.com/cd/E19455-01/806-5257/gen-26/index.html
-    // printf("\x1b[?1049l");
-    write(0, SEQ_DISABLE_ALTERNATIVE_BUFFER, sizeof(SEQ_DISABLE_ALTERNATIVE_BUFFER) - 1);
+    if (alternativeBufferCalled)
+    {
+        alternativeBufferCalled = 0;
+        // why I use write: https://stackoverflow.com/a/16891799/15507414
+        // also: https://docs.oracle.com/cd/E19455-01/806-5257/gen-26/index.html
+        // printf("\x1b[?1049l");
+        write(0, SEQ_DISABLE_ALTERNATIVE_BUFFER, sizeof(SEQ_DISABLE_ALTERNATIVE_BUFFER) - 1);
+    }
 }
 
 void showCursor()
