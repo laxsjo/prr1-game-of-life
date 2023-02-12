@@ -30,17 +30,19 @@ void askConfig(BoardState *state)
 
     while (true)
     {
-        //enable raw mode and ask player for board options
-        enableRawMode();
-        speakGen(7, "Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n", false);
+        // enable raw mode and ask player for board options
+        //  enableRawMode();
+        //  speakGen(7, "Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n", false);
         printFace(false);
         printf("Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n");
 
-        //loop until player inputs 's', 'p', or 'c'
-        while (1) {
+        // loop until player inputs 's', 'p', or 'c'
+        while (1)
+        {
 
             char c = '\0';
-            if(read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) die("read");
+            if (read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN)
+                die("read");
             /*
             if(iscntrl(c)) {
                 printf("%d\r\n", c);
@@ -48,7 +50,8 @@ void askConfig(BoardState *state)
                 printf("%d ('%c')\r\n", c, c);
             }
             */
-            if(c == 's' || c == 'p' || c == 'c'){
+            if (c == 's' || c == 'p' || c == 'c')
+            {
                 input[0] = c;
                 break;
             }
@@ -63,10 +66,10 @@ void askConfig(BoardState *state)
             int usleep(useconds_t usec);
             int len = getAvailableSaveNames(&names, false);
 
-            //fail in case there are no previous save files
+            // fail in case there are no previous save files
             if (len == 0)
             {
-            
+
                 system("clear");
 
                 printFace(false);
@@ -87,8 +90,8 @@ void askConfig(BoardState *state)
 
                 continue;
             }
-            
-            //display available saved boards
+
+            // display available saved boards
             printf("Available boards:\n");
             for (int i = 0; i < len; i++)
             {
@@ -100,14 +103,14 @@ void askConfig(BoardState *state)
             scanf("%d", &boardChoice);
             boardChoice -= 1;
 
-            //loop question if player inputs faulty response
-            if (boardChoice < 0 && len != 1|| boardChoice >= len && len != 1)
+            // loop question if player inputs faulty response
+            if (boardChoice < 0 && len != 1 || boardChoice >= len && len != 1)
             {
                 printf("Please choose a number between 1-%d!\n", len);
                 sleep(2);
                 continue;
             }
-            else if (boardChoice < 0 && len == 1|| boardChoice >= len && len == 1)
+            else if (boardChoice < 0 && len == 1 || boardChoice >= len && len == 1)
             {
                 printf("Please choose number %d!\n", len);
                 sleep(2);
@@ -119,8 +122,8 @@ void askConfig(BoardState *state)
 
             char *name = names[boardChoice];
 
-            //load the board that the player chose and crash if file name
-            //wasn't found or if save file couldn't be found
+            // load the board that the player chose and crash if file name
+            // wasn't found or if save file couldn't be found
             int result = loadBoard(state, name, false);
             if (result == LOAD_RESULT_FILE_MISSING)
             {
@@ -143,7 +146,7 @@ void askConfig(BoardState *state)
             int boardChoice;
             char **names;
             int len = getAvailableSaveNames(&names, true);
-            //if there are no presets available
+            // if there are no presets available
             if (len == 0)
             {
                 system("clear");
@@ -167,7 +170,7 @@ void askConfig(BoardState *state)
                 continue;
             }
 
-            //display presets
+            // display presets
             printf("Available presets:\n");
             for (int i = 0; i < len; i++)
             {
@@ -177,8 +180,9 @@ void askConfig(BoardState *state)
             printf("Choose a number:\n> ");
             scanf("%d", &boardChoice);
 
-            //special board with special interaction from Gunther (the host character)
-            if(boardChoice == 13){
+            // special board with special interaction from Gunther (the host character)
+            if (boardChoice == 13)
+            {
                 system("clear");
                 speakGen(1, "Please no!\n", true);
                 printFace(true);
@@ -197,14 +201,15 @@ void askConfig(BoardState *state)
                     usleep(500000);
                 }
                 printf("\r\n");
-                
+
                 printf("(Press 'c' to continue regardless...)\r\n");
 
-
-                while (1) {
+                while (1)
+                {
 
                     char c = '\0';
-                    if(read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) die("read");
+                    if (read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN)
+                        die("read");
                     /*
                     if(iscntrl(c)) {
                         printf("%d\r\n", c);
@@ -212,7 +217,8 @@ void askConfig(BoardState *state)
                         printf("%d ('%c')\r\n", c, c);
                     }
                     */
-                    if(c == 'c'){
+                    if (c == 'c')
+                    {
                         break;
                     }
                 }
@@ -234,7 +240,7 @@ void askConfig(BoardState *state)
 
             char *name = names[boardChoice];
 
-            //load board and fail in case file name or file is missing
+            // load board and fail in case file name or file is missing
             int result = loadBoard(state, name, true);
             if (result == LOAD_RESULT_FILE_MISSING)
             {
@@ -245,10 +251,11 @@ void askConfig(BoardState *state)
                 panic("couldn't find choosen save");
             }
             state->saveName = name;
-            
-            //let the player make modifications to the presets unless the preset in question
-            //is... the forbidden one...
-            if(boardChoice != 12){
+
+            // let the player make modifications to the presets unless the preset in question
+            // is... the forbidden one...
+            if (boardChoice != 12)
+            {
                 printf("Do you wan't to save any modifications you make to this preset? [y/n]\n> ");
                 scanf("%s", input);
                 scanf("%c", throwaway); // get rid of trailing newline
@@ -279,7 +286,7 @@ void askConfig(BoardState *state)
         }
         else if (input[0] == 'c')
         {
-            //ask player for board name
+            // ask player for board name
             system("clear");
             char *name = malloc(41);
             speakGen(6, "Please enter a name for the new board:\n", false);
@@ -298,7 +305,7 @@ void askConfig(BoardState *state)
             speakGen(2, "Bye now!\n", true);
             usleep(200000);
 
-            //create a new, empty board for the player to be able to customize
+            // create a new, empty board for the player to be able to customize
             bool **cells = createEmptyBoardCells((Vec2){1, 1});
             *state = (BoardState){
                 cells,
