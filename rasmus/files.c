@@ -616,7 +616,7 @@ void saveBoard(const BoardState *state)
     int result = readSaveFile(&content);
     if (result == LOAD_RESULT_SUCCESS)
     {
-        int boardLen = separateBoards(content, &boardSaves);
+        boardLen = separateBoards(content, &boardSaves);
         free(content);
     }
     else
