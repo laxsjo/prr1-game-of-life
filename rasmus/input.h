@@ -26,6 +26,9 @@ typedef struct
 
 void freeInputList(InputList list);
 
+/*
+Convert a raw array of input bytes into a `InputList`.
+*/
 bool parseInputBytes(const char *bytes, const size_t bytesLength, InputList *outList);
 
 #endif

@@ -3,6 +3,10 @@
 #ifndef _ANSI_TERM_H
 #define _ANSI_TERM_H
 
+/*
+This file contains functions to print terminal escape sequences.
+*/
+
 #define FG_COLOR_BLACK 30
 #define FG_COLOR_RED 31
 #define FG_COLOR_GREEN 32

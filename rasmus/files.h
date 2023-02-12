@@ -7,8 +7,23 @@
 #define LOAD_RESULT_NAME_NOT_FOUND 1
 #define LOAD_RESULT_FILE_MISSING 2
 
+/*
+Load board save of name saveName from the `.gol.saves.txt` save file.
+
+Returns `LOAD_RESULT_SUCCESS` on success.
+
+Returns `LOAD_RESULT_NAME_NOT_FOUND` when the given save name does not exist.
+
+Returns `LOAD_RESULT_FILE_MISSING` when the `.gol.saves.txt` file does not
+exist.
+
+Make sure you check for errors!
+*/
 int loadBoard(BoardState *board, const char *saveName, const bool isPreset);
 
+/*
+Save board to `.gol.saves.txt`
+*/
 void saveBoard(const BoardState *state);
 
 /// Get a list of save names from `.gol.saves.txt` and store them inside

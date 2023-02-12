@@ -6,6 +6,10 @@
 #include "str_utils.h"
 #include "general.h"
 
+/*
+An intermediary representation of a board, where we only store the save name and
+raw content from the save file.
+*/
 typedef struct
 {
     char *name;
@@ -307,7 +311,7 @@ const char *presetFileContent =
     "00000000000000000000000000000000000000000000000000000000000\n";
 
 /*
-Load content of preset 'file' into fileContent.
+Load content of preset "file" into fileContent.
 
 Make sure to free fileContent.
 Always succeeds.
@@ -339,6 +343,13 @@ void writeSaveFile(const char *content)
     }
 }
 
+/*
+Separate raw save file content into a list of `BoardSave` structs.
+
+Returns the length of the created list.
+
+Make sure to free the `BoardSave` structs!
+*/
 int separateBoards(const char *fileContent, BoardSave **boardList)
 {
     int len = strlen(fileContent);
@@ -440,6 +451,10 @@ int separateBoards(const char *fileContent, BoardSave **boardList)
     return nameCount;
 }
 
+/*
+Convert a string of a board contents (from a save file) into a proper
+`BoardState` struct.
+*/
 BoardState parseBoardContent(const char *boardContent)
 {
     size_t len = strlen(boardContent);
@@ -553,6 +568,9 @@ BoardState parseBoardContent(const char *boardContent)
     return state;
 }
 
+/*
+Convert a list of `BoardSave` to a single string to be saved to a save file.
+*/
 void createFileContentFromBoardList(char **fileContent, const BoardSave *boardList, const size_t listLen)
 {
     size_t totalLen = 0;
@@ -597,10 +615,6 @@ void createFileContentFromBoardList(char **fileContent, const BoardSave *boardLi
     *fileContent = content;
 }
 
-/* Load board save of name saveName from the .gol.saves.txt save file.
-Returns LOAD_RESULT_*
-Make sure you check for errors!
-*/
 int loadBoard(BoardState *board, const char *saveName, const bool isPreset)
 {
     char *content;

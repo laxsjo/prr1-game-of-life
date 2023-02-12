@@ -3,8 +3,19 @@
 #ifndef _GAME_LOGIC_H
 #define _GAME_LOGIC_H
 
+/*
+Check if the point is within the visual board bounds.
+
+The visual board bounds is the smallest of the screen size and literal size of
+the board in memory.
+*/
 bool pointInsideBoard(const BoardState *state, const Vec2 point);
 
+/*
+Take inputs, and change state appropriately.
+This function returns `true` when the user wants to close/finish the current
+view.
+*/
 bool takeInputs(BoardState *state, bool allowEdit);
 
 /// Todo: finish documentation

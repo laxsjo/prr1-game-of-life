@@ -84,6 +84,11 @@ typedef struct
     u_int8_t b;
 } Rgb;
 
+/*
+Rust-style string slices.
+
+For it's corresponding functions, see `rasmus/str_utils.h`.
+*/
 typedef struct
 {
     char *str;

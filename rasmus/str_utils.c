@@ -50,6 +50,8 @@ Copies string slice into string `offset` bytes from the start.
 
 This function does not check the destination length in any way. Make sure it is
 long enough.
+
+Unused
 */
 void copyStrSliceToStr(char *dest, const StrSlice *restrict slice, const size_t offset)
 {
@@ -61,6 +63,7 @@ void copyStrSliceToStr(char *dest, const StrSlice *restrict slice, const size_t 
     memcpy(dest + offset, slice->str, slice->len);
 }
 
+// Unused
 void freeStrList(char **strings, size_t len)
 {
     for (size_t i = 0; i < len; i++)
