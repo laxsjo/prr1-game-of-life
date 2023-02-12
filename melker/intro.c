@@ -13,6 +13,7 @@
 
 struct termios orig_termios;
 
+//when our library calls fail, terminate the program
 void die(const char *s) {
 
     perror(s);
@@ -30,6 +31,7 @@ void enableRawMode() {
     if(tcgetattr(STDIN_FILENO, &orig_termios) == -1) die("tcgetattr");
     atexit(disableRawMode);
 
+    //turning off various flags and set CS8 for when we run raw mode
     struct termios raw = orig_termios;
     raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
     raw.c_oflag &= ~(OPOST);
@@ -41,6 +43,7 @@ void enableRawMode() {
     if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcsetattr");
 }
 
+//makes Gunther say X for Y amount of itterations, he can either be shocked or not
 void speakGen(int dialogueLen, char *msg, bool isShocked){
     for (int i = 0; i < dialogueLen + 1; i++){
 
@@ -89,6 +92,7 @@ void speakGen(int dialogueLen, char *msg, bool isShocked){
     }
 }
 
+//prints Gunther's shocked or normal face
 void printFace(bool isShocked){
     if(!isShocked){
         printf("   _______   \r\n");
@@ -108,6 +112,7 @@ void printFace(bool isShocked){
     }
 }
 
+//intro sequence for the game
 void runIntro(){
     enableRawMode();
 
@@ -138,6 +143,7 @@ void runIntro(){
     
     printf("(Press 'y'...)\r\n");
 
+    //loop until player inputs 'y'
     while (1) {
 
         char c = '\0';
@@ -152,6 +158,7 @@ void runIntro(){
         if(c == 'y') break;
     }
 
+    //he's happy, he won't be if you play... the forbidden board...
     system("clear");
     printf("   _______   \r\n");
     printf("  /       \\  \r\n");
@@ -211,6 +218,7 @@ void runIntro(){
     
     printf("(Press 's'...)\r\n");
 
+    //loop until player inputs 's'
     while (1) {
 
         char c = '\0';

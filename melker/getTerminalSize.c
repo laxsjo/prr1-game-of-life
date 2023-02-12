@@ -4,6 +4,7 @@
 
 Vec2 getTerminalSize()
 {
+    //get the current size of the terminal and let that be the return value
     struct winsize termSize;
     ioctl(0, TIOCGWINSZ, &termSize);
 

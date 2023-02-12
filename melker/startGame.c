@@ -25,17 +25,11 @@ void startGame(BoardState *state)
     Vec2 size = getTerminalSize();
     size.x *= 2;
     char message[101]; // this should be more than enough, right?...
+
+    //message displayed at the top of the screen while simulation is ongoing
     snprintf(message, 100, "Simulating board '%s'. [Arrow keys]: move cursor, [Enter]/[Esc]: exit", state->saveName);
     message[100] = '\0';
     state->message = message;
-    // // // !Potential problem: since we have two states constantly being flipped
-    // // // between `state` and `newState`, the other copy doesn't have the
-    // // // metadata of the original.
-    // // Nvm, since, we copy the board, the information (more accurately the
-    // // pointers to the messages, so the information is shared!) is copied...
-    // Nvm x2, this is a problem, since the input position isn't synchronized.
-    // TODO: Switch `other` to purely be a 2d-list of cells that gets jugled
-    // around.
 
     growBoardToWindow(state);
 
@@ -49,7 +43,8 @@ void startGame(BoardState *state)
 
     bool stopSim = false;
     int firstLoopCheck = 0;
-
+    //loop the simulation until stopSim is true, this happens when
+    //the player presses the 'stop'-button (see comments under gameTick)
     while (stopSim != true)
     {
         if (firstLoopCheck == 0)
@@ -59,13 +54,13 @@ void startGame(BoardState *state)
         }
         stopSim = gameTick(state, other);
 
+        //juggle the information/content between states
         bool **temp = state->cells;
         state->cells = other;
         other = temp;
 
         renderBoard(state);
 
-        // sleep(1);
         usleep(100000);
     }
 

@@ -6,6 +6,11 @@
 #include <stdbool.h>
 #include <time.h>
 
+
+//!!!ATTENTION!!!
+//Old function for testing out states in early development,
+//not currently in use and is merely here for reference and
+//showcase purposes! :)
 int makePlaceholderState(BoardState *state){
     Vec2 gridSize = state->screenSize;
     Vec2 playerPos = {0, 0};

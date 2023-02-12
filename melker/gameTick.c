@@ -23,8 +23,7 @@
 bool gameTick(BoardState *state, bool **newCells)
 {
 
-    // BoardState next;
-
+    //simulate all the existing cells on the board
     simulateCells(state, newCells);
     for (size_t x = 0; x < state->screenSize.x; x++)
     {
@@ -34,15 +33,10 @@ bool gameTick(BoardState *state, bool **newCells)
         }
     }
 
-    /*
-    freeBoardCells(state->cells, state->screenSize);
-    state->cells = next.cells;
-    */
-
+    //if player presses 'stop'-button, return true, signalizing that the simulation should stop
     bool stop = takeInputs(state, false);
     if (stop == true)
     {
-        printf("STOP!\n");
         return true;
     }
 
