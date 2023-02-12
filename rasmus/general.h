@@ -19,6 +19,11 @@ This calls `cleanUp` before exiting.
 #define panic(reason) _panic(reason, (const _LineInfo){__LINE__, __FILE__, __func__})
 
 /*
+Makes sure that `cleanUp` is called upon receiving any signal.
+*/
+void setupCrashHandler();
+
+/*
 Ready the terminal for rendering the board.
 
 Make sure to call `cleanUp` before ending the program!

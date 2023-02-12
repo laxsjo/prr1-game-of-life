@@ -34,9 +34,8 @@ I also changed the globals to be atomic types.
 source: https://stackoverflow.com/a/16891799/15507414
 */
 
-void initBoardDisplay()
+void setupCrashHandler()
 {
-    flushCommands();
     /// source: https://stackoverflow.com/questions/554138/catching-segfaults-in-c
     signal(SIGINT, exitSignal);
     signal(SIGILL, exitSignal);
@@ -44,7 +43,10 @@ void initBoardDisplay()
     signal(SIGFPE, exitSignal);
     signal(SIGSEGV, exitSignal);
     signal(SIGTERM, exitSignal);
+}
 
+void initBoardDisplay()
+{
     fcntl_default = fcntl(0, F_GETFL);
     // non blocking source: https://gamedev.stackexchange.com/a/146263
     // the main source: https://stackoverflow.com/a/30548692/15507414
