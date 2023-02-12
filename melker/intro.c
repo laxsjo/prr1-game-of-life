@@ -1,47 +1,15 @@
 #include <ctype.h>
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <termios.h>
 #include <unistd.h>
 #include <string.h>
 #include <stdbool.h>
+#include "../rasmus/ansi_term.h"
 
 //Source: https://viewsourcecode.org/snaptoken/kilo/02.enteringRawMode.html
 
 //Useful ASCII table: https://www.asciitable.com/
-
-struct termios orig_termios;
-
-//when our library calls fail, terminate the program
-void die(const char *s) {
-
-    perror(s);
-    exit(1);
-}
-
-void disableRawMode() {
-
-    if (tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios) == -1)
-    die("tcsetattr");
-}
-
-void enableRawMode() {
-
-    if(tcgetattr(STDIN_FILENO, &orig_termios) == -1) die("tcgetattr");
-    atexit(disableRawMode);
-
-    //turning off various flags and set CS8 for when we run raw mode
-    struct termios raw = orig_termios;
-    raw.c_iflag &= ~(BRKINT | ICRNL | INPCK | ISTRIP | IXON);
-    raw.c_oflag &= ~(OPOST);
-    raw.c_cflag |= (CS8);
-    raw.c_lflag &= ~(ECHO | ICANON | IEXTEN | ISIG);
-    raw.c_cc[VMIN] = 0;
-    raw.c_cc[VTIME] = 1;
-
-    if(tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw) == -1) die("tcsetattr");
-}
 
 //makes Gunther say X for Y amount of itterations, he can either be shocked or not
 void speakGen(int dialogueLen, char *msg, bool isShocked){
@@ -114,7 +82,7 @@ void printFace(bool isShocked){
 
 //intro sequence for the game
 void runIntro(){
-    enableRawMode();
+    enterNonCanonicalMode();
 
     system("clear");
 
@@ -147,7 +115,8 @@ void runIntro(){
     while (1) {
 
         char c = '\0';
-        if(read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) die("read");
+        read(STDIN_FILENO, &c, 1);
+
         /*
         if(iscntrl(c)) {
             printf("%d\r\n", c);
@@ -222,7 +191,8 @@ void runIntro(){
     while (1) {
 
         char c = '\0';
-        if(read(STDIN_FILENO, &c, 1) == -1 && errno != EAGAIN) die("read");
+        read(STDIN_FILENO, &c, 1);
+
         /*
         if(iscntrl(c)) {
             printf("%d\r\n", c);
@@ -232,9 +202,8 @@ void runIntro(){
         */
         if(c == 's'){
             system("clear");
-            printf("\r\n");
             break;
         }
     }
-    disableRawMode();
+    exitNonCanonicalMode();
 }
