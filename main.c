@@ -5,10 +5,13 @@
 #include "types.h"
 #include "melker/startGame.h"
 #include "melker/askConfig.h"
+#include "melker/intro.h"
 
 int main()
 {
     BoardState state;
+
+    runIntro();
 
     askConfig(&state);
 

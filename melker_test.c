@@ -5,6 +5,7 @@
 #include "melker/getTerminalSize.h"
 #include "melker/simulateCells.h"
 #include "melker/startGame.h"
+#include "melker/intro.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -52,91 +53,10 @@ void startGame(BoardState *state, BoardState *newState){
 int main()
 {
     BoardState stateInput;
-    /*
-    stateInput.playerPos = (Vec2){0, 0};
-    next.playerPos = (Vec2){0, 0};
-    stateInput.message = "c";
-    next.message = "c";
-    Vec2 size = stateInput.screenSize = (Vec2){100, 40};
-    Vec2 nextSize = next.screenSize = (Vec2){100, 40};
-    */
 
-
-
-
-    //HERE, DO THIS, FIX THE CONFIG THING!!!
-    //askConfig(stateInput, next);
+    //runIntro();
 
     askConfig(&stateInput);
     
-    //loadBoard(&stateInput, "board3", false);
-    
-    //startGame(&stateInput);
-
-
-    /*
-   for(int y = 0; y < stateInput.screenSize.y; y++){
-        for(int x = 0; x < stateInput.screenSize.x; x++){
-            printf("%d ",stateInput.cells[y][x]); 
-        }
-        printf("\n");
-    }
-    printf("\n");
-    */
-   
-
-    //getTerminalSize();
-    //bool stopDummyBool = false;
-
-    //srand(time(NULL));
-
-    //makePlaceholderState(&stateInput);
-    //makePlaceholderState(&next);
-    /*for(int y = 0; y < stateInput.screenSize.y; y++){
-        for(int x = 0; x < stateInput.screenSize.x; x++){
-            printf("%d ",stateInput.cells[y][x]); 
-        }
-        printf("\n");
-    }
-    printf("\n");
-    */
-    //simulateCells(&stateInput, &next);
-
-    /*
-    int loopCount = 0;
-    while(stopDummyBool != true){
-        //printf("Loop %d:\n", loopCount);
-        simulateCells(&stateInput, &next);
-        //gameTick(&stateInput);
-
-        //Print output of sim
-        printf("Output of loop %d:\n", loopCount);
-        for(int y = 0; y < next.screenSize.y; y++){
-            for(int x = 0; x < next.screenSize.x; x++){
-                printf("%d ", next.cells[y][x]); 
-            }
-            printf("\n");
-        }
-        printf("\n");
-
-        stateInput = next;
-
-        sleep(1);
-        loopCount++;
-        //clearScreen();
-    }
-    
-    */
-
-    //askConfig(&stateInput);
-
-    //askConfig(&stateInput);
-    
-
-    //startGame(&stateInput, &next);
-    
-
-
-
     return 0;
 }

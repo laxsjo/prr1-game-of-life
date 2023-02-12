@@ -12,6 +12,10 @@
 #include "../rasmus/game_logic.h"
 #include "../rasmus/str_utils.h"
 #include "startGame.h"
+#include <ctype.h>
+#include <errno.h>
+#include <termios.h>
+#include "intro.h"
 
 // Function for loading presets, saved board configs, and creating new boards
 void askConfig(BoardState *state)
@@ -25,7 +29,10 @@ void askConfig(BoardState *state)
 
     while (true)
     {
-        printf("Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\n> ");
+        speakGen(7, "Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n", false);
+        printFace(false);
+        printf("Would you like to load a previously saved board, load a preset, or create a new board? [s/p/c]\r\n");
+
         scanf("%s", input); // S for Saved player-mades, P for Presets, and C for Creating new boards
 
         if (input[0] == 's')
@@ -33,19 +40,40 @@ void askConfig(BoardState *state)
 
             int boardChoice;
             char **names;
+            int usleep(useconds_t usec);
             int len = getAvailableSaveNames(&names, false);
+
             if (len == 0)
             {
-                printf("Sorry, there were no saves available.\n");
+            
+                system("clear");
+
+                printFace(false);
+                printf("Hmmm...");
+                usleep(200000);
+                fflush(stdout);
+
+                printf("Let's see...\n");
+                usleep(1000000);
+
+                system("clear");
+
+                speakGen(6, "Sorry, there were no saves available.\n", true);
+                printFace(true);
+                usleep(500000);
+
+                system("clear");
+
                 continue;
             }
             // printf("Okay! Which board would you like to simulate of the ones mentioned below?\n");
-
+                    
             printf("Available boards:\n");
             for (int i = 0; i < len; i++)
             {
                 printf("%d: ", i + 1);
                 printf("%s\n", names[i]);
+                usleep(200000);
             }
             printf("Choose a number: ");
 
@@ -55,6 +83,7 @@ void askConfig(BoardState *state)
             if (boardChoice < 0 || boardChoice >= len)
             {
                 printf("Please choose a number between 1 and %d\n", len);
+                sleep(2);
                 continue;
             }
             char temp;
@@ -86,7 +115,24 @@ void askConfig(BoardState *state)
             int len = getAvailableSaveNames(&names, true);
             if (len == 0)
             {
-                printf("Sorry, there were no presets available.\n");
+                system("clear");
+
+                printFace(false);
+                printf("Hmmm...");
+                usleep(200000);
+                fflush(stdout);
+
+                printf("Let's see...\n");
+                usleep(1000000);
+
+                system("clear");
+
+                speakGen(6, "Sorry, there were no presets available.\n", true);
+                printFace(true);
+                usleep(500000);
+
+                system("clear");
+
                 continue;
             }
             // printf("Okay! Which board would you like to simulate of the ones mentioned below?\n");
@@ -96,6 +142,7 @@ void askConfig(BoardState *state)
             {
                 printf("%d: ", i + 1);
                 printf("%s\n", names[i]);
+                usleep(200000);
             }
             printf("Choose a number: ");
 
@@ -103,7 +150,12 @@ void askConfig(BoardState *state)
             boardChoice -= 1;
             if (boardChoice < 0 || boardChoice >= len)
             {
+                system("clear");
+
+                printFace(true);
                 printf("Please choose a number between 1 and %d\n", len);
+                sleep(2);
+                system("clear");
                 continue;
             }
             char temp;
@@ -153,7 +205,8 @@ void askConfig(BoardState *state)
         {
             // TODO: This memory will leak! It's probably fine, but still...
             char *name = malloc(41);
-            printf("Please enter a name for the new board:\n> ");
+            speakGen(6, "Please enter a name for the new board:\n", false);
+            printFace(false);
             scanf("%s", name);
             bool **cells = createEmptyBoardCells((Vec2){1, 1});
             *state = (BoardState){

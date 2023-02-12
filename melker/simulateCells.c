@@ -45,16 +45,7 @@ int simulateSingleCell(BoardState *state, Vec2 cellToSimulate)
             {
                 continue;
             }
-            // printf("%d, %d\n", i, j);
-            // printf("CellToSimulate coords: %d, %d\n\n", cellToSimulate.y, cellToSimulate.x);
-            /*
-            if(cellToSimulate.y + i >= 0  && cellToSimulate.x + j >= 0 && cellToSimulate.y + i <= state->screenSize.y && cellToSimulate.x + j <= state->screenSize.x){
-                //if(cellToSimulate.y + i <= state->screenSize.y && cellToSimulate.x + j <= state->screenSize.x){
-                    if(state->cells[i][j] == 1){
-                        sum++;
-                    }
-                //}
-            }*/
+            
 
             if ((cellToSimulate.y + i) >= 0 && (cellToSimulate.x + j) >= 0 && (cellToSimulate.y + i) < state->screenSize.y && (cellToSimulate.x + j) < state->screenSize.x)
             {
