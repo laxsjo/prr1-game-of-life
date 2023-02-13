@@ -17,6 +17,7 @@
 int main()
 {
     BoardState state;
+    
     setupCrashHandler();
 
     activateAlternativeBuffer();
