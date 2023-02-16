@@ -17,12 +17,21 @@
 int main()
 {
     BoardState state;
-    
+
     setupCrashHandler();
 
     activateAlternativeBuffer();
 
-    runIntro();
+    char skip[41];
+
+    printf("Skip intro? [y/n]");
+    scanf("%s", skip);
+    system("clear");
+
+    if (skip[0] != 'y')
+    {
+        runIntro();
+    }
 
     askConfig(&state);
 
